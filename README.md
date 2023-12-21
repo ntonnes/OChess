@@ -13,4 +13,5 @@ _failwith "TODO"_
 This is a personal project inspired by a class I took in functional programming at McGill University. I enjoyed learning OCaml, 
 and I wanted to make something larger than the assignments we had to complete for class. In light of my recent interest in 
 getting good at chess, I decided to make a simple chess engine with OCaml. I had originally intended to use OCaml's graphics 
-package for the GUI, but decided to use TSDL instead, which provides bindings for SDL in OCaml. 
+package for the GUI, but decided to use TSDL instead, which provides bindings for SDL in OCaml. This provides more flexibility 
+and will allow me to implement some more advanced features in the future.
