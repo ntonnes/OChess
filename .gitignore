@@ -1,0 +1,8 @@
+# dune's build directory
+_build/
+
+# local opam switch
+_opam/
+
+# vs code workspace
+chess.code-workspace
