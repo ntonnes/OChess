@@ -1,7 +1,7 @@
 open Pieces 
 open Constants
 
-let new_board =
+let new_game () = 
   let pieces = Array.make_matrix board_size board_size None in
   pieces.(0).(0) <- Some (Rook (Black, true));
   pieces.(0).(1) <- Some (Knight Black);

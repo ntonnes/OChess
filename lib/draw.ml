@@ -2,12 +2,27 @@ open Tsdl
 open Pieces
 open Constants
 
-(* create a new renderer for the chess board in the background *)
-let draw_chessboard renderer =
 
+
+let get_piece renderer cell = 
+  let set_color renderer r g b a = Sdl.set_render_draw_color renderer r g b a |> ignore in
+  
+  match cell with
+  | None -> ()
+  | Some (Pawn _) -> set_color renderer 255 0 0 255;()  (* pawn = red *)
+  | Some (Rook _) -> set_color renderer 0 0 255 255;() (* rook = blue *)  
+  | Some (Bishop _) -> set_color renderer 0 255 0 255;() (* bishop = green *)
+  | Some (Knight _) -> set_color renderer 255 255 0 255;() (* knight = yellow *)
+  | Some (Queen _) -> set_color renderer 128 0 128 255;() (* queen = purple *)
+  | Some (King _) -> set_color renderer 255 165 0 255;() (* king = orange *)
+
+
+
+let update renderer game_state =
   for row = 0 to 7 do
     for col = 0 to 7 do
 
+      (* draw board square *)
       let rect = Sdl.Rect.create ~x:(col * cell_size) ~y:(row * cell_size) ~w:cell_size ~h:cell_size in
       if (row + col) mod 2 = 0 then
         Sdl.set_render_draw_color renderer 255 206 158 255 |> ignore
@@ -15,60 +30,11 @@ let draw_chessboard renderer =
         Sdl.set_render_draw_color renderer 209 139 71 255 |> ignore;
       Sdl.render_fill_rect renderer (Some rect) |> ignore;
 
-    done;
-  done
-
-let draw_pieces renderer board =
-
-  for row = 0 to board_size - 1 do
-    for col = 0 to board_size -1 do
-
-      let rect = Sdl.Rect.create ~x:0 ~y:0 ~w:cell_size ~h:cell_size in
-      match (board).(row).(col) with
-
-      | None -> ()
-
-      | Some (Pawn _) ->
-        (* pawn = red *)
-        Sdl.set_render_draw_color renderer 255 0 0 255 |> ignore;
-        Sdl.Rect.set_x rect (col * cell_size);
-        Sdl.Rect.set_y rect (row * cell_size);
-        Sdl.render_fill_rect renderer (Some rect) |> ignore;
-
-        | Some (Rook _) ->
-          (* rook = blue *)
-          Sdl.set_render_draw_color renderer 0 0 255 255 |> ignore;
-          Sdl.Rect.set_x rect (col * cell_size);
-          Sdl.Rect.set_y rect (row * cell_size);
-          Sdl.render_fill_rect renderer (Some rect) |> ignore;
-  
-        | Some (Bishop _) ->
-          (* bishop = green *)
-          Sdl.set_render_draw_color renderer 0 255 0 255 |> ignore;
-          Sdl.Rect.set_x rect (col * cell_size);
-          Sdl.Rect.set_y rect (row * cell_size);
-          Sdl.render_fill_rect renderer (Some rect) |> ignore;
-  
-        | Some (Knight _) ->
-          (* knight = yellow *)
-          Sdl.set_render_draw_color renderer 255 255 0 255 |> ignore;
-          Sdl.Rect.set_x rect (col * cell_size);
-          Sdl.Rect.set_y rect (row * cell_size);
-          Sdl.render_fill_rect renderer (Some rect) |> ignore;
-  
-        | Some (Queen _) ->
-          (* queen = purple *)
-          Sdl.set_render_draw_color renderer 128 0 128 255 |> ignore;
-          Sdl.Rect.set_x rect (col * cell_size);
-          Sdl.Rect.set_y rect (row * cell_size);
-          Sdl.render_fill_rect renderer (Some rect) |> ignore;
-  
-        | Some (King _) ->
-          (* king = orange *)
-          Sdl.set_render_draw_color renderer 255 165 0 255 |> ignore;
-          Sdl.Rect.set_x rect (col * cell_size);
-          Sdl.Rect.set_y rect (row * cell_size);
-          Sdl.render_fill_rect renderer (Some rect) |> ignore;
-
-      done
+      (* render piece within cell *)
+      let rect = Sdl.Rect.create ~x:(col * cell_size) ~y:(row * cell_size) ~w:cell_size ~h:cell_size in
+      let cell = (game_state).(row).(col) in
+      get_piece renderer cell;
+      Sdl.render_fill_rect renderer (Some rect) |> ignore (* this just refills with background color if there is no piece*)
+    
+    done
   done

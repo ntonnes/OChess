@@ -2,10 +2,9 @@
 opam-version: "2.0"
 synopsis: "A chess implementation using OCaml and SDL"
 description: """
-This is a personal project inspired by a class I took in functional programming. I wanted to try working 
-with large OCaml projects beyond the small assignments done for the class. I am also gaining experience 
-with SDL by using TSDL to create the graphics, a package which implements SDL commands in OCaml.
-"""
+This is a personal project inspired by a class I took in functional programming. 
+ I wanted to try working with large OCaml projects beyond the small assignments done for the class. 
+ I am also gaining experience with SDL by using TSDL to create the graphics, a package which implements SDL commands in OCaml."""
 maintainer: ["Noah Tonnesen"]
 authors: ["Noah Tonnesen"]
 license: "LICENSE"

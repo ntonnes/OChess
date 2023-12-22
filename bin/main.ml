@@ -1,17 +1,17 @@
 open Tsdl
 open Chess
 
-(* Keeps the main window open until closed *)
-let event_loop renderer =
-  Draw.draw_chessboard renderer;                    (* draws chessboard in the empty renderer *)
-  Draw.draw_pieces renderer Board.new_board; (* draws pieces in current game state in the renderer *)
-  Sdl.render_present renderer;                      (* presents renderer in the application window *)
+(* Loop that handles all events from the user *)
+let event_loop window renderer game_state =
+  Sdl.get_window_size window |> ignore;
+  Draw.update renderer game_state; 
+  Sdl.render_present renderer;                  
   
-  let e = Sdl.Event.create () in                                    (* initialize empty event... *)                                   
-  let rec loop () = match Sdl.wait_event (Some e) with              (* wait for an event to occur... *)
-  | Error (`Msg e) -> Log.log_err " Could not wait event: %s" e; () (* handle error *)
+  let e = Sdl.Event.create () in                                                                    
+  let rec loop () = match Sdl.wait_event (Some e) with              
+  | Error (`Msg e) -> Sdl.log_error 1 " Could not wait event: %s" e; () 
   | Ok () ->
-      Log.log "%a" Log.pp_event e;             (* print event info to terminal *)
+      Sdl.log "%a" Log.pp_event e;
       match Sdl.Event.(enum (get e typ)) with  (* match on the type of the event *)
       | `Quit -> ()                            (* break *)
       | _ -> loop ()                           (* continue to next event *)
@@ -20,21 +20,23 @@ let event_loop renderer =
 
   
 (* Main application *)
-let main () = match Sdl.init Sdl.Init.(video + events) with                              (* try to initialize application *)
+let main () = match Sdl.init Sdl.Init.(video + events) with                        (* try to initialize application *)
 
-  | Error (`Msg e) -> Log.log "Init error: %s" e; exit 1
-  | Ok () -> match Sdl.create_window ~w:800 ~h:800 "Noah's Chess" Sdl.Window.opengl with (* try to create an empty window *)
+  | Error (`Msg e) -> Sdl.log_error 0 "Init error: %s" e; exit 1
+  | Ok () -> match Sdl.create_window ~w:800 ~h:800 "OChess" Sdl.Window.opengl with (* try to create an empty window *)
 
-    | Error (`Msg e) -> Log.log "Create window error: %s" e; exit 1 
-    | Ok w -> match Sdl.create_renderer w with                                           (* try to create an empty renderer *)
+    | Error (`Msg e) -> Sdl.log_error 0 "Create window error: %s" e; exit 1 
+    | Ok window -> match Sdl.create_renderer window with                                     (* try to create an empty renderer *)
 
-      | Error (`Msg e) -> Log.log "Create renderer error: %s" e; exit 1
-      | Ok renderer ->                                                                   
-        event_loop renderer;                                                             (* pass empty renderer to event loop *)
+      | Error (`Msg e) -> Sdl.log_error 0 "Create renderer error: %s" e; exit 1
+      | Ok renderer ->
+
+        let game_state = Board.new_game () in (* initialize the internal game *)
+        event_loop window renderer game_state; (* enter event loop *)                       
 
         (* close application *)
         Sdl.destroy_renderer renderer; 
-        Sdl.destroy_window w;
+        Sdl.destroy_window window;
         Sdl.quit ();
         exit 0
 
