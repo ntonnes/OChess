@@ -40,3 +40,4 @@ let new_game () =
   pieces.(7).(7) <- Some (Rook (White, true));
   
   pieces
+;;

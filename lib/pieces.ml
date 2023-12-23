@@ -1,8 +1,6 @@
 (* defines chess pieces *)
-
-
 type color = White | Black 
-type first = true | false
+type first = bool
 type piece =
 | King of color * first
 | Queen of color
@@ -27,5 +25,4 @@ let pieceString piece =
   | Knight White -> "White Knight"
   | Pawn (Black, _) -> "Black Pawn"
   | Pawn (White, _) -> "White Pawn"
-
-
+;;

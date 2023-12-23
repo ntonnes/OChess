@@ -8,17 +8,17 @@ let get_piece renderer cell =
   let set_color renderer r g b a = Sdl.set_render_draw_color renderer r g b a |> ignore in
   
   match cell with
-  | None -> ()
-  | Some (Pawn _) -> set_color renderer 255 0 0 255;()  (* pawn = red *)
-  | Some (Rook _) -> set_color renderer 0 0 255 255;() (* rook = blue *)  
-  | Some (Bishop _) -> set_color renderer 0 255 0 255;() (* bishop = green *)
-  | Some (Knight _) -> set_color renderer 255 255 0 255;() (* knight = yellow *)
-  | Some (Queen _) -> set_color renderer 128 0 128 255;() (* queen = purple *)
-  | Some (King _) -> set_color renderer 255 165 0 255;() (* king = orange *)
+  | None -> false
+  | Some (Pawn _) -> set_color renderer 255 0 0 255;true  (* pawn = red *)
+  | Some (Rook _) -> set_color renderer 0 0 255 255;true (* rook = blue *)  
+  | Some (Bishop _) -> set_color renderer 0 255 0 255;true (* bishop = green *)
+  | Some (Knight _) -> set_color renderer 255 255 0 255;true (* knight = yellow *)
+  | Some (Queen _) -> set_color renderer 128 0 128 255;true (* queen = purple *)
+  | Some (King _) -> set_color renderer 255 165 0 255;true (* king = orange *)
+;;
 
 
-
-let update renderer game_state =
+let render_chessboard renderer = 
   for row = 0 to 7 do
     for col = 0 to 7 do
 
@@ -29,12 +29,21 @@ let update renderer game_state =
       else
         Sdl.set_render_draw_color renderer 209 139 71 255 |> ignore;
       Sdl.render_fill_rect renderer (Some rect) |> ignore;
+    done
+  done;
+
+  Sdl.render_present renderer;
+;;
+
+
+let update renderer game_state =
+  for row = 0 to 7 do
+    for col = 0 to 7 do
 
       (* render piece within cell *)
-      let rect = Sdl.Rect.create ~x:(col * cell_size) ~y:(row * cell_size) ~w:cell_size ~h:cell_size in
+      let rect = Sdl.Rect.create ~x:((col * cell_size)+10) ~y:((row * cell_size)+10) ~w:(cell_size-20) ~h:(cell_size-20) in
       let cell = (game_state).(row).(col) in
-      get_piece renderer cell;
-      Sdl.render_fill_rect renderer (Some rect) |> ignore (* this just refills with background color if there is no piece*)
+      if get_piece renderer cell then Sdl.render_fill_rect renderer (Some rect) |> ignore
     
     done
   done
