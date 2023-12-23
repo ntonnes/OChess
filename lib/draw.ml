@@ -42,6 +42,7 @@ let render_chessboard renderer =
 
 
 let render_pieces renderer game_state =
+let render_pieces renderer game_state =
   for row = 0 to 7 do
     for col = 0 to 7 do
 

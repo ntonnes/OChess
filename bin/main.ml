@@ -3,7 +3,12 @@ open Chess
 
 (* Loop that handles all events from the user *)
 let event_loop window renderer game_state =                
+let event_loop window renderer game_state =                
   let e = Sdl.Event.create () in                                                                    
+  let rec loop () = 
+    match Sdl.wait_event (Some e) with              
+    | Error (`Msg e) -> Sdl.log_error 1 " Could not wait event: %s" e; () 
+    | Ok () ->
   let rec loop () = 
     match Sdl.wait_event (Some e) with              
     | Error (`Msg e) -> Sdl.log_error 1 " Could not wait event: %s" e; () 
@@ -16,6 +21,8 @@ let event_loop window renderer game_state =
       | _ -> loop ()                           (* continue to next event *)
   in
   loop ()   
+;;
+
 ;;
 
 (* Main application *)
