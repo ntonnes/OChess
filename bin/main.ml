@@ -2,23 +2,21 @@ open Tsdl
 open Chess
 
 (* Loop that handles all events from the user *)
-let event_loop window renderer game_state =
-  Sdl.get_window_size window |> ignore;
-  Draw.update renderer game_state; 
-  Sdl.render_present renderer;                  
-  
+let event_loop window renderer game_state =                
   let e = Sdl.Event.create () in                                                                    
-  let rec loop () = match Sdl.wait_event (Some e) with              
-  | Error (`Msg e) -> Sdl.log_error 1 " Could not wait event: %s" e; () 
-  | Ok () ->
+  let rec loop () = 
+    match Sdl.wait_event (Some e) with              
+    | Error (`Msg e) -> Sdl.log_error 1 " Could not wait event: %s" e; () 
+    | Ok () ->
       Sdl.log "%a" Log.pp_event e;
       match Sdl.Event.(enum (get e typ)) with  (* match on the type of the event *)
       | `Quit -> ()                            (* break *)
+      | `Window_event -> Draw.update window renderer game_state; loop ()
       | _ -> loop ()                           (* continue to next event *)
   in
   loop ()   
+;;
 
-  
 (* Main application *)
 let main () = match Sdl.init Sdl.Init.(video + events) with                        (* try to initialize application *)
 
@@ -32,7 +30,8 @@ let main () = match Sdl.init Sdl.Init.(video + events) with                     
       | Ok renderer ->
 
         let game_state = Board.new_game () in (* initialize the internal game *)
-        Draw.render_chessboard renderer;
+        
+        Draw.update window renderer game_state;
         event_loop window renderer game_state; (* enter event loop *)                       
 
         (* close application *)
