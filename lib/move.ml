@@ -1,3 +1,4 @@
+(*
 open Pieces
 open Constants
 
@@ -56,3 +57,4 @@ let validate_destination move=
     - make sure king isnt in check
   *)
 ;;
+*)

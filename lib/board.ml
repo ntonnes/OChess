@@ -1,43 +1,50 @@
 open Pieces 
 open Constants
+open Tsdl
 
-let new_game () = 
-  let pieces = Array.make_matrix board_size board_size None in
-  pieces.(0).(0) <- Some (Rook (Black, true));
-  pieces.(0).(1) <- Some (Knight Black);
-  pieces.(0).(2) <- Some (Bishop Black);
-  pieces.(0).(3) <- Some (Queen Black);
-  pieces.(0).(4) <- Some (King (Black, true));
-  pieces.(0).(5) <- Some (Bishop Black);
-  pieces.(0).(6) <- Some (Knight Black);
-  pieces.(0).(7) <- Some (Rook (Black, true));
-
-  pieces.(1).(0) <- Some (Pawn (Black, true));
-  pieces.(1).(1) <- Some (Pawn (Black, true));
-  pieces.(1).(2) <- Some (Pawn (Black, true));
-  pieces.(1).(3) <- Some (Pawn (Black, true));
-  pieces.(1).(4) <- Some (Pawn (Black, true));
-  pieces.(1).(5) <- Some (Pawn (Black, true));
-  pieces.(1).(6) <- Some (Pawn (Black, true));
-  pieces.(1).(7) <- Some (Pawn (Black, true));
-
-  pieces.(6).(0) <- Some (Pawn (White, true));
-  pieces.(6).(1) <- Some (Pawn (White, true));
-  pieces.(6).(2) <- Some (Pawn (White, true));
-  pieces.(6).(3) <- Some (Pawn (White, true));
-  pieces.(6).(4) <- Some (Pawn (White, true));
-  pieces.(6).(5) <- Some (Pawn (White, true));
-  pieces.(6).(6) <- Some (Pawn (White, true));
-  pieces.(6).(7) <- Some (Pawn (White, true));
-
-  pieces.(7).(0) <- Some (Rook (White, true));
-  pieces.(7).(1) <- Some (Knight White);
-  pieces.(7).(2) <- Some (Bishop White);
-  pieces.(7).(3) <- Some (Queen White);
-  pieces.(7).(4) <- Some (King (White, true));
-  pieces.(7).(5) <- Some (Bishop White);
-  pieces.(7).(6) <- Some (Knight White);
-  pieces.(7).(7) <- Some (Rook (White, true));
-  
-  pieces
+let new_piece row col= Sdl.Rect.create 
+  ~x:((col * !cell_size) + 10 + !offset_x) 
+  ~y:((row * !cell_size) + 10 + !offset_y) 
+  ~w:(!cell_size-20) 
+  ~h:(!cell_size-20) 
 ;;
+
+
+let new_game () : piece list = 
+  [
+  { piece=Rook; color=Black; first=true; row=0; col=0 ; rect=new_piece 0 0 };
+  { piece=Knight; color=Black; first=true; row=0; col=1; rect=new_piece 0 1 };
+  { piece=Bishop; color=Black; first=true; row=0; col=2; rect=new_piece 0 2 };
+  { piece=Queen; color=Black; first=true; row=0; col=3; rect=new_piece 0 3 };
+  { piece=King; color=Black; first=true; row=0; col=4; rect=new_piece 0 4 };
+  { piece=Bishop; color=Black; first=true; row=0; col=5; rect=new_piece 0 5 };
+  { piece=Knight; color=Black; first=true; row=0; col=6; rect=new_piece 0 6 };
+  { piece=Rook; color=Black; first=true; row=0; col=7; rect=new_piece 0 7 };
+
+  { piece=Pawn; color=Black; first=true; row=1; col=0; rect=new_piece 1 0 };
+  { piece=Pawn; color=Black; first=true; row=1; col=1; rect=new_piece 1 1 };
+  { piece=Pawn; color=Black; first=true; row=1; col=2; rect=new_piece 1 2 };
+  { piece=Pawn; color=Black; first=true; row=1; col=3; rect=new_piece 1 3 };
+  { piece=Pawn; color=Black; first=true; row=1; col=4; rect=new_piece 1 4 };
+  { piece=Pawn; color=Black; first=true; row=1; col=5; rect=new_piece 1 5 };
+  { piece=Pawn; color=Black; first=true; row=1; col=6; rect=new_piece 1 6 };
+  { piece=Pawn; color=Black; first=true; row=1; col=7; rect=new_piece 1 7 };
+
+  { piece=Pawn; color=White; first=true; row=6; col=0; rect=new_piece 6 0 };
+  { piece=Pawn; color=White; first=true; row=6; col=1; rect=new_piece 6 1 };
+  { piece=Pawn; color=White; first=true; row=6; col=2; rect=new_piece 6 2 };
+  { piece=Pawn; color=White; first=true; row=6; col=3; rect=new_piece 6 3 };
+  { piece=Pawn; color=White; first=true; row=6; col=4; rect=new_piece 6 4 };
+  { piece=Pawn; color=White; first=true; row=6; col=5; rect=new_piece 6 5 };
+  { piece=Pawn; color=White; first=true; row=6; col=6; rect=new_piece 6 6 };
+  { piece=Pawn; color=White; first=true; row=6; col=7; rect=new_piece 6 7 };
+
+  { piece=Rook; color=White; first=true; row=7; col=0; rect=new_piece 7 0 };
+  { piece=Knight; color=White; first=true; row=7; col=1; rect=new_piece 7 1 };
+  { piece=Bishop; color=White; first=true; row=7; col=2; rect=new_piece 7 2 };
+  { piece=Queen; color=White; first=true; row=7; col=3; rect=new_piece 7 3 };
+  { piece=King; color=White; first=true; row=7; col=4; rect=new_piece 7 4 };
+  { piece=Bishop; color=White; first=true; row=7; col=5; rect=new_piece 7 5 };
+  { piece=Knight; color=White; first=true; row=7; col=6; rect=new_piece 7 6 };
+  { piece=Rook; color=White; first=true; row=7; col=7; rect=new_piece 7 7 }
+  ]

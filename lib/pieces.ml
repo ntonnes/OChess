@@ -1,28 +1,35 @@
-(* defines chess pieces *)
-type color = White | Black 
-type first = bool
-type piece =
-| King of color * first
-| Queen of color
-| Rook of color * first
-| Bishop of color
-| Knight of color
-| Pawn of color * first
+open Tsdl
+
+type color = White | Black ;;
+type piece_type = King | Queen | Rook | Bishop | Knight | Pawn ;;
+
+type piece = {
+  piece : piece_type;
+  color : color;
+  first : bool;
+  row : int;
+  col : int;
+  rect : Sdl.rect
+}
+;;
 
 
 (* converts a chess piece to a string describing it *)
-let pieceString piece = 
-  match piece with
-  | King (Black, _) -> "Black King"
-  | King (White, _) -> "White King"
-  | Queen Black -> "Black Queen"
-  | Queen White -> "White Queen"
-  | Rook (Black, _) -> "Black Rook"
-  | Rook (White, _) -> "White Rook"
-  | Bishop Black -> "Black Bishop"
-  | Bishop White -> "White Bishop"
-  | Knight Black -> "Black Knight"
-  | Knight White -> "White Knight"
-  | Pawn (Black, _) -> "Black Pawn"
-  | Pawn (White, _) -> "White Pawn"
+let string_of_piece p = 
+
+  let piece = match p.piece with
+    | King -> "King"
+    | Queen -> "Queen"
+    | Rook -> "Rook"
+    | Bishop -> "Bishop"
+    | Knight-> "Knight"
+    | Pawn -> "Pawn"
+  in
+
+  let color = match p.color with
+    | Black -> "Black "
+    | White -> "White "
+  in
+
+  piece^color;
 ;;
