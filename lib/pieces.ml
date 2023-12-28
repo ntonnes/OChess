@@ -1,7 +1,7 @@
-open Tsdl
-
 type color = White | Black ;;
 type piece_type = King | Queen | Rook | Bishop | Knight | Pawn ;;
+
+
 
 type piece = {
   piece : piece_type;
@@ -9,10 +9,9 @@ type piece = {
   first : bool;
   row : int;
   col : int;
-  rect : Sdl.rect;
-  img : Sdl.surface
 }
 ;;
+
 
 
 (* converts a chess piece to a string describing it *)
