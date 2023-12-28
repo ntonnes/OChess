@@ -2,14 +2,23 @@ open Pieces
 open Constants
 open Tsdl
 
-let new_piece row col= Sdl.Rect.create 
+(**)
+let new_piece row col = Sdl.Rect.create 
   ~x:((col * !cell_size) + 10 + !offset_x) 
   ~y:((row * !cell_size) + 10 + !offset_y) 
   ~w:(!cell_size-20) 
   ~h:(!cell_size-20) 
 ;;
 
+let adjust_pieces piece_list : piece list= 
+  let fix p = 
+    { piece=p.piece; color=p.color; first=p.first; row=p.row; col=p.col; rect=new_piece p.row p.col }
+  in 
+  let updated_pieces = List.map (fun p -> fix p) piece_list in
+  updated_pieces
 
+
+(* initializes a list of pieces that corresponds to a new chess game *)
 let new_game () : piece list = 
   [
   { piece=Rook; color=Black; first=true; row=0; col=0 ; rect=new_piece 0 0 };

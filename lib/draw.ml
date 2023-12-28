@@ -1,6 +1,7 @@
 open Tsdl
 open Pieces
 open Constants
+open Board
 
 
 
@@ -52,7 +53,8 @@ let refresh_window window renderer game_state =
 
   let (w, h) = (!window_width, !window_height) in
   if Sdl.get_window_size window <> (w, h) then 
-    update_constants window; 
+    update_constants window;
+    let game_state = adjust_pieces game_state in
     render_chessboard renderer;
     render_pieces renderer game_state;
   Sdl.render_present renderer;
