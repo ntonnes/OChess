@@ -9,7 +9,8 @@ type piece = {
   first : bool;
   row : int;
   col : int;
-  rect : Sdl.rect
+  rect : Sdl.rect;
+  img : Sdl.surface
 }
 ;;
 
