@@ -3,6 +3,7 @@ type piece_type = King | Queen | Rook | Bishop | Knight | Pawn ;;
 
 
 
+(* struct for pieces*)
 type piece = {
   piece : piece_type;
   color : color;

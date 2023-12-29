@@ -4,7 +4,6 @@ open Tsdl_image
 open Constants
 
 
-
 (* create a rect with the same dimensions as the a cell at (row,col) *)
 let new_piece row col = Sdl.Rect.create 
   ~x:((col * !cell_size) + (!cell_size/10) + !offset_x) 

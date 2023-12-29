@@ -6,6 +6,8 @@ let window_width = ref (!cell_size * board_size)
 let window_height = ref (!cell_size * board_size)
 let offset_x = ref 0
 let offset_y = ref 0
+let board_width = ref (!window_width - !offset_x)
+let board_height = ref (!window_height - !offset_y)
 
 let update_constants window = 
   match Sdl.get_window_size window with

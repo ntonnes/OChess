@@ -1,11 +1,6 @@
 
 let leftMouseButtonDown = ref false ;;
 
-(*
-let get_piece = 
-  match Sdl.get_mouse_state with
-  | (x, y) -> 
-    (* lookup the piece at pixel (x, y) *)
-    (* enter a loop where the piece is redrawn  *)
-  | _ -> None
-  *)
+(*let selected_cell window (x, y) = 
+  let dim = Sdl.get_window_size window in
+*)
