@@ -6,7 +6,7 @@
 (generate_opam_files true)
 
 (source
- (github ntonnes/ocaml-chess))
+ (github ntonnes/OChess))
 
 (authors "Noah Tonnesen")
 
@@ -14,7 +14,7 @@
 
 (license LICENSE)
 
-(documentation "https://ntonnes.github.io/ocaml-chess/")
+(documentation "https://ntonnes.github.io/OChess/")
 
 (package
  (name chess)

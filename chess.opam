@@ -10,13 +10,14 @@ maintainer: ["Noah Tonnesen"]
 authors: ["Noah Tonnesen"]
 license: "LICENSE"
 tags: ["topics" "to describe" "your" "project"]
-homepage: "https://github.com/ntonnes/ocaml-chess"
-doc: "https://ntonnes.github.io/ocaml-chess/"
-bug-reports: "https://github.com/ntonnes/ocaml-chess/issues"
+homepage: "https://github.com/ntonnes/OChess"
+doc: "https://ntonnes.github.io/OChess/"
+bug-reports: "https://github.com/ntonnes/OChess/issues"
 depends: [
   "ocaml"
   "dune" {>= "3.12"}
   "tsdl"
+  "tsdl-image"
   "odoc" {with-doc}
 ]
 build: [
@@ -33,4 +34,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/ntonnes/ocaml-chess.git"
+dev-repo: "git+https://github.com/ntonnes/OChess.git"
