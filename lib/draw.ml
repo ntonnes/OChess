@@ -1,11 +1,17 @@
 open Tsdl
 open Constants
-open Img
+open Pieces
 open Tsdl_image
 
+(*** CREATE CELL RECT AT SPECIFIED LOCATION ***)
+let new_piece row col = Sdl.Rect.create 
+  ~x:((col * !cell_size) + (!cell_size/10) + !offset_x) 
+  ~y:((row * !cell_size) + (!cell_size/10) + !offset_y) 
+  ~w:(!cell_size - (!cell_size/5)) 
+  ~h:(!cell_size - (!cell_size/5)) 
+;;
 
-
-(* renders the background chessboard *)
+(*** RENDER BACKGROUND CHESSBOARD ***)
 let render_chessboard renderer = 
 
   (* load board image as a texture *)
@@ -26,15 +32,30 @@ let render_chessboard renderer =
 ;;
 
 
+(* RENDERS A SINGLE CHESS PIECE *)
+let render_texture renderer piece = 
 
-(* renders pieces in the current state onto the board *)
+  (* load corresponding image as a texture *)
+  let tex = match Image.load_texture renderer ("./assets/"^(string_of_piece piece)^".png") with
+    | Error (`Msg e) -> Sdl.log_error 0 "Create texture error: %s" e; exit 1 
+    | Ok tex -> tex
+  in
+
+  (* create rect at piece's location *)
+  let rect = new_piece piece.row piece.col in
+
+  (* render texture into the new rect *)
+  Sdl.render_copy renderer tex ~dst:rect |> ignore;
+;;
+
+
+(*** RENDERS ALL PIECES IN CURRENT STATE ***)
 let render_pieces renderer game_state =
   List.iter (render_texture renderer) game_state
 ;;
 
 
-
-(* fixes the renderer according to the current window dimensions *)
+(*** RE-RENDERS BOARD AND ALL PIECES ***)
 let refresh_window window renderer game_state =
 
   let (w, h) = (!window_width, !window_height) in
@@ -44,4 +65,5 @@ let refresh_window window renderer game_state =
     render_pieces renderer game_state;
   Sdl.render_present renderer;
 ;;
+
 

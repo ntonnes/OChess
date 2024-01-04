@@ -19,18 +19,18 @@ type piece = {
 let string_of_piece p = 
 
   let piece = match p.piece with
-    | King -> "King"
-    | Queen -> "Queen"
-    | Rook -> "Rook"
-    | Bishop -> "Bishop"
-    | Knight-> "Knight"
-    | Pawn -> "Pawn"
+    | King -> "king"
+    | Queen -> "queen"
+    | Rook -> "rook"
+    | Bishop -> "bishop"
+    | Knight-> "knight"
+    | Pawn -> "pawn"
   in
 
   let color = match p.color with
-    | Black -> "Black "
-    | White -> "White "
+    | Black -> "black_"
+    | White -> "white_"
   in
 
-  piece^color;
+  color^piece;
 ;;

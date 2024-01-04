@@ -1,15 +1,8 @@
 open Pieces 
 
-(* update the piece list based on the current window size
-let adjust_pieces piece_list : piece list= 
-  let fix p = 
-    { piece=p.piece; color=p.color; first=p.first; row=p.row; col=p.col; }
-  in 
-  let updated_pieces = List.map (fun p -> fix p) piece_list in
-  updated_pieces *)
-
 
 (* initializes a list of pieces that corresponds to a new chess game *)
+(* association list *)
 let new_game () : piece list = 
   [
   { piece=Rook; color=Black; first=true; row=0; col=0; };
