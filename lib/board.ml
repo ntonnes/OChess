@@ -5,39 +5,39 @@ open Pieces
 (* association list *)
 let new_game () : piece list = 
   [
-  { piece=Rook; color=Black; first=true; row=0; col=0; };
-  { piece=Knight; color=Black; first=true; row=0; col=1; };
-  { piece=Bishop; color=Black; first=true; row=0; col=2; };
-  { piece=Queen; color=Black; first=true; row=0; col=3; };
-  { piece=King; color=Black; first=true; row=0; col=4; };
-  { piece=Bishop; color=Black; first=true; row=0; col=5; };
-  { piece=Knight; color=Black; first=true; row=0; col=6; };
-  { piece=Rook; color=Black; first=true; row=0; col=7; };
+  { piece=Rook; color=Black; first=true; row=ref 0; col=ref 0; };
+  { piece=Knight; color=Black; first=true; row=ref 0; col=ref 1; };
+  { piece=Bishop; color=Black; first=true; row=ref 0; col=ref 2; };
+  { piece=Queen; color=Black; first=true; row=ref 0; col=ref 3; };
+  { piece=King; color=Black; first=true; row=ref 0; col=ref 4; };
+  { piece=Bishop; color=Black; first=true; row=ref 0; col=ref 5; };
+  { piece=Knight; color=Black; first=true; row=ref 0; col=ref 6; };
+  { piece=Rook; color=Black; first=true; row=ref 0; col=ref 7; };
 
-  { piece=Pawn; color=Black; first=true; row=1; col=0; };
-  { piece=Pawn; color=Black; first=true; row=1; col=1; };
-  { piece=Pawn; color=Black; first=true; row=1; col=2; };
-  { piece=Pawn; color=Black; first=true; row=1; col=3; };
-  { piece=Pawn; color=Black; first=true; row=1; col=4; };
-  { piece=Pawn; color=Black; first=true; row=1; col=5; };
-  { piece=Pawn; color=Black; first=true; row=1; col=6; };
-  { piece=Pawn; color=Black; first=true; row=1; col=7; };
+  { piece=Pawn; color=Black; first=true; row=ref 1; col=ref 0; };
+  { piece=Pawn; color=Black; first=true; row=ref 1; col=ref 1; };
+  { piece=Pawn; color=Black; first=true; row=ref 1; col=ref 2; };
+  { piece=Pawn; color=Black; first=true; row=ref 1; col=ref 3; };
+  { piece=Pawn; color=Black; first=true; row=ref 1; col=ref 4; };
+  { piece=Pawn; color=Black; first=true; row=ref 1; col=ref 5; };
+  { piece=Pawn; color=Black; first=true; row=ref 1; col=ref 6; };
+  { piece=Pawn; color=Black; first=true; row=ref 1; col=ref 7; };
 
-  { piece=Pawn; color=White; first=true; row=6; col=0; };
-  { piece=Pawn; color=White; first=true; row=6; col=1; };
-  { piece=Pawn; color=White; first=true; row=6; col=2; };
-  { piece=Pawn; color=White; first=true; row=6; col=3; };
-  { piece=Pawn; color=White; first=true; row=6; col=4; };
-  { piece=Pawn; color=White; first=true; row=6; col=5; };
-  { piece=Pawn; color=White; first=true; row=6; col=6; };
-  { piece=Pawn; color=White; first=true; row=6; col=7; };
+  { piece=Pawn; color=White; first=true; row=ref 6; col=ref 0; };
+  { piece=Pawn; color=White; first=true; row=ref 6; col=ref 1; };
+  { piece=Pawn; color=White; first=true; row=ref 6; col=ref 2; };
+  { piece=Pawn; color=White; first=true; row=ref 6; col=ref 3; };
+  { piece=Pawn; color=White; first=true; row=ref 6; col=ref 4; };
+  { piece=Pawn; color=White; first=true; row=ref 6; col=ref 5; };
+  { piece=Pawn; color=White; first=true; row=ref 6; col=ref 6; };
+  { piece=Pawn; color=White; first=true; row=ref 6; col=ref 7; };
 
-  { piece=Rook; color=White; first=true; row=7; col=0; };
-  { piece=Knight; color=White; first=true; row=7; col=1; };
-  { piece=Bishop; color=White; first=true; row=7; col=2; };
-  { piece=Queen; color=White; first=true; row=7; col=3; };
-  { piece=King; color=White; first=true; row=7; col=4; };
-  { piece=Bishop; color=White; first=true; row=7; col=5; };
-  { piece=Knight; color=White; first=true; row=7; col=6; };
-  { piece=Rook; color=White; first=true; row=7; col=7; }
+  { piece=Rook; color=White; first=true; row=ref 7; col=ref 0; };
+  { piece=Knight; color=White; first=true; row=ref 7; col=ref 1; };
+  { piece=Bishop; color=White; first=true; row=ref 7; col=ref 2; };
+  { piece=Queen; color=White; first=true; row=ref 7; col=ref 3; };
+  { piece=King; color=White; first=true; row=ref 7; col=ref 4; };
+  { piece=Bishop; color=White; first=true; row=ref 7; col=ref 5; };
+  { piece=Knight; color=White; first=true; row=ref 7; col=ref 6; };
+  { piece=Rook; color=White; first=true; row=ref 7; col=ref 7; }
   ]

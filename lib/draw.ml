@@ -42,7 +42,7 @@ let render_texture renderer piece =
   in
 
   (* create rect at piece's location *)
-  let rect = new_piece piece.row piece.col in
+  let rect = new_piece !(piece.row) !(piece.col) in
 
   (* render texture into the new rect *)
   Sdl.render_copy renderer tex ~dst:rect |> ignore;

@@ -8,8 +8,8 @@ type piece = {
   piece : piece_type;
   color : color;
   first : bool;
-  row : int;
-  col : int;
+  row : int ref;
+  col : int ref;
 }
 ;;
 

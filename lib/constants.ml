@@ -1,4 +1,5 @@
 open Tsdl
+open Pieces
 
 let cell_size = ref 100
 let board_size = 8
@@ -6,6 +7,7 @@ let window_width = ref (!cell_size * board_size)
 let window_height = ref (!cell_size * board_size)
 let offset_x = ref 0
 let offset_y = ref 0
+let selected : piece option ref = ref None
 
 let update_constants window = 
   match Sdl.get_window_size window with
