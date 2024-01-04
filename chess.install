@@ -1,0 +1,11 @@
+lib: [
+  "_build/install/default/lib/chess/META"
+  "_build/install/default/lib/chess/dune-package"
+  "_build/install/default/lib/chess/opam"
+]
+bin: [
+  "_build/install/default/bin/chess"
+]
+doc: [
+  "_build/install/default/doc/chess/README.md"
+]

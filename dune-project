@@ -1,6 +1,7 @@
 (lang dune 3.12)
 
 (name chess)
+(version 18aaa6d-dirty)
 
 (generate_opam_files true)
 
