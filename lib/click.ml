@@ -1,6 +1,10 @@
+open Constants
 
-let leftMouseButtonDown = ref false ;;
+let selected_cell x_coord y_coord= 
+  let col = (x_coord - !offset_x) / !cell_size in
+  let row = (y_coord - !offset_y) / !cell_size in
+  (row, col)
 
-(*let selected_cell window (x, y) = 
-  let dim = Sdl.get_window_size window in
-*)
+let selected_piece x_coord y_coord = 
+  let cell = selected_cell x_coord y_coord in
+  
