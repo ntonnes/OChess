@@ -10,6 +10,10 @@ let offset_x = ref 0
 let offset_y = ref 0
 let selected : piece option ref = ref None
 let gs : game_state ref = ref []
+<<<<<<< HEAD
+=======
+
+>>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
 
 let update_constants window = 
   match Sdl.get_window_size window with

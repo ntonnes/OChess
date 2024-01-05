@@ -6,7 +6,6 @@ open Validate
 let selected_cell x y = 
   let col = (x - !offset_x) / !cell_size in
   let row = (y - !offset_y) / !cell_size in
-  Printf.printf "Left mouse button clicked at row %d, column %d\n" row col;
   (row, col)
 ;;
 
@@ -25,17 +24,29 @@ let process window x y renderer =
     begin match validate p coord with
     | false -> 
       selected := None;
+<<<<<<< HEAD
       refresh_window window renderer !gs
+=======
+      refresh_window window renderer 
+>>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
     
     | true -> 
       selected := None;
       p.row := fst coord;
       p.col := snd coord;
+<<<<<<< HEAD
       refresh_window window renderer !gs
+=======
+      refresh_window window renderer 
+>>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
 
     end;
     
   | None -> 
     get_selected coord;
+<<<<<<< HEAD
     refresh_window window renderer !gs
+=======
+    refresh_window window renderer
+>>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
 ;;
