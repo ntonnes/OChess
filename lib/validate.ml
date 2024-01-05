@@ -1,4 +1,5 @@
 open Pieces
+open Constants
 
 let validate_king dx dy =
   if abs dx < 2 && abs dy < 2 then true
@@ -35,15 +36,29 @@ let validate_pawn piece dx dy =
     if !(piece.first) && dx = -2 && dy = 0 then true
     else if dx = -1 && dy = 0 then true  
     else false
+  ;;
+;;
+
+let valid_destination piece dest = 
+  let pred p = dest = (!(p.row), !(p.col)) in
+  match List.find_opt pred !gs with
+  | None -> true
+  | Some x when x.color = piece.color -> false
+  | Some x -> 
+    let predd p = x <> p in
+    gs := List.filter predd (!gs);
+    true
+;;
+
 
 let validate piece dest = 
-  let s_row, s_col = !(piece.row), !(piece.col) in
-  let d_row, d_col = (fst dest), (snd dest) in
-  let dx, dy = (s_row - d_row), (s_col - d_col) in
-  match piece.piece with
-  | King -> validate_king dx dy
-  | Queen -> validate_queen dx dy
-  | Bishop -> validate_bishop dx dy
-  | Knight -> validate_knight dx dy
-  | Rook -> validate_rook dx dy
-  | Pawn -> validate_pawn piece dx dy
+  let dx, dy = !(piece.row)-(fst dest), !(piece.col)-(snd dest) in
+  let valid_movement = match piece.piece with
+    | King -> validate_king dx dy
+    | Queen -> validate_queen dx dy
+    | Bishop -> validate_bishop dx dy
+    | Knight -> validate_knight dx dy
+    | Rook -> validate_rook dx dy
+    | Pawn -> validate_pawn piece dx dy
+  in
+  valid_movement && valid_destination piece dest

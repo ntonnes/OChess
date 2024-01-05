@@ -73,14 +73,14 @@ let render_pieces renderer game_state =
 
 
 (*** RE-RENDERS BOARD AND ALL PIECES ***)
-let refresh_window window renderer game_state =
+let refresh_window window renderer gs =
 
   let (w, h) = (!window_width, !window_height) in
   if Sdl.get_window_size window <> (w, h) then 
     update_constants window;
   render_chessboard renderer;
   render_selected renderer;
-  render_pieces renderer game_state;
+  render_pieces renderer gs;
   Sdl.render_present renderer
 ;;
 

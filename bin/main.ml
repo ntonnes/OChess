@@ -12,11 +12,9 @@ let main () = match Sdl.init Sdl.Init.(video + events) with                     
 
       | Error (`Msg e) -> Sdl.log_error 0 "Create renderer error: %s" e; exit 1
       | Ok renderer ->
-
-        let game_state = Board.new_game () in (* initialize the internal game *)
         
-        Draw.refresh_window window renderer game_state;
-        Loop.event_loop window renderer game_state; (* enter event loop *)                       
+        (*Draw.refresh_window window renderer gs;*)
+        Loop.event_loop window renderer; (* enter event loop *)                       
 
         (* close application *)
         Sdl.destroy_renderer renderer; 

@@ -10,25 +10,32 @@ let selected_cell x y =
   (row, col)
 ;;
 
-let get_selected piece_list coord = 
+let get_selected coord = 
   let pred p = if coord = (!(p.row), !(p.col)) then true else false in
-  match List.find_opt pred piece_list with
+  match List.find_opt pred !gs with
   | None -> ()
   | Some x -> selected := Some x
   
 ;;
 
-let process window piece_list x y renderer= 
+let process window x y renderer = 
   let coord = selected_cell x y in
-  let go () = match !selected with
+  match !selected with
   | Some p -> 
-    if validate p coord then begin
+    begin match validate p coord with
+    | false -> 
+      selected := None;
+      refresh_window window renderer !gs
+    
+    | true -> 
+      selected := None;
       p.row := fst coord;
       p.col := snd coord;
+      refresh_window window renderer !gs
+
     end;
-    selected := None
-  | None -> get_selected piece_list coord
-  in
-  go ();
-  refresh_window window renderer piece_list
+    
+  | None -> 
+    get_selected coord;
+    refresh_window window renderer !gs
 ;;
