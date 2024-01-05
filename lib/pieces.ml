@@ -7,7 +7,7 @@ type piece_type = King | Queen | Rook | Bishop | Knight | Pawn ;;
 type piece = {
   piece : piece_type;
   color : color;
-  first : bool;
+  first : bool ref;
   row : int ref;
   col : int ref;
 }

@@ -13,7 +13,7 @@ let event_loop window renderer game_state =
       | `Mouse_button_down -> 
         let x, y = Sdl.Event.(get e mouse_button_x, get e mouse_button_y) in
         if Sdl.Event.(get e mouse_button_button) = Sdl.Button.left then
-          Click.process game_state x y renderer;
+          Click.process window game_state x y renderer;
         loop ()
       | _ -> loop ()                           (* continue to next event *)
   in

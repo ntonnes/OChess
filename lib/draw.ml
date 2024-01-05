@@ -49,6 +49,23 @@ let render_texture renderer piece =
 ;;
 
 
+let render_selected renderer =
+  let color p = 
+    let (row, col) = (!(p.row), !(p.col)) in
+    let rect = Sdl.Rect.create
+      ~x:((col * !cell_size) + !offset_x) 
+      ~y:((row * !cell_size) + !offset_y) 
+      ~w:!cell_size
+      ~h:!cell_size 
+    in
+    Sdl.set_render_draw_color renderer 0 255 0 128 |> ignore;
+    Sdl.render_fill_rect renderer (Some rect) |> ignore;
+  in
+  match !selected with
+  | None -> ()
+  | Some p -> color p
+;;
+
 (*** RENDERS ALL PIECES IN CURRENT STATE ***)
 let render_pieces renderer game_state =
   List.iter (render_texture renderer) game_state
@@ -61,9 +78,10 @@ let refresh_window window renderer game_state =
   let (w, h) = (!window_width, !window_height) in
   if Sdl.get_window_size window <> (w, h) then 
     update_constants window;
-    render_chessboard renderer;
-    render_pieces renderer game_state;
-  Sdl.render_present renderer;
+  render_chessboard renderer;
+  render_selected renderer;
+  render_pieces renderer game_state;
+  Sdl.render_present renderer
 ;;
 
 
