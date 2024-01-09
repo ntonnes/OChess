@@ -1,41 +1,50 @@
-open Constants
+open Globals
 open Pieces
 open Draw
 open Validate
 
-let selected_cell x y = 
+
+(* 
+   Function: cell_of_pixel
+   Takes screen coordinates (x, y) and calculates the corresponding chess board cell (row, col).
+   Returns: (row, col) tuple
+*)
+let cell_of_pixel x y : (int * int) = 
   let col = (x - !offset_x) / !cell_size in
   let row = (y - !offset_y) / !cell_size in
   (row, col)
 ;;
 
-let get_selected coord = 
-  let pred p = if coord = (!(p.row), !(p.col)) then true else false in
+
+(* 
+   Function: get_selected
+   Takes chess board coordinates (row, col) and updates the selected piece variable.
+   Returns: none
+*)
+let get_selected (row, col) : unit = 
+  let pred p = (row, col) = (!(p.row), !(p.col)) in
   match List.find_opt pred !gs with
   | None -> ()
   | Some x -> selected := Some x
-  
 ;;
 
-let process window x y renderer = 
-  let coord = selected_cell x y in
+
+(* 
+   Function: process
+   Handles the processing of mouse clicks on the chess board.
+   Updates the selected piece and refreshes the game window accordingly.
+   Returns: none
+*)
+let process x y = 
+  let (row, col) = cell_of_pixel x y in
   match !selected with
-  | Some p -> 
-    begin match validate p coord with
-    | false -> 
-      selected := None;
-      refresh_window window renderer 
 
-    | true -> 
-      selected := None;
-      p.row := fst coord;
-      p.col := snd coord;
-      refresh_window window renderer 
-
-
+  | Some p -> selected := None;
+    begin match validate p (row, col) with
+    | false -> ()
+    | true -> p.row := row; p.col := col;
     end;
-    
-  | None -> 
-    get_selected coord;
-    refresh_window window renderer
+    refresh ();
+
+  | None -> get_selected (row, col); refresh()
 ;;

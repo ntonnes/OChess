@@ -1,9 +1,17 @@
 open Tsdl
-open Constants
+open Globals
 open Pieces
 open Tsdl_image
 
-(*** CREATE CELL RECT AT SPECIFIED LOCATION ***)
+
+(* 
+   Function: new_piece
+   Creates a new SDL.Rect representing a chess piece at the specified location.
+   Parameters:
+     - row: The row on the chess board
+     - col: The column on the chess board
+   Returns: SDL.Rect
+*)
 let new_piece row col = Sdl.Rect.create 
   ~x:((col * !cell_size) + (!cell_size/10) + !offset_x) 
   ~y:((row * !cell_size) + (!cell_size/10) + !offset_y) 
@@ -11,32 +19,45 @@ let new_piece row col = Sdl.Rect.create
   ~h:(!cell_size - (!cell_size/5)) 
 ;;
 
-(*** RENDER BACKGROUND CHESSBOARD ***)
-let render_chessboard renderer = 
 
-  (* load board image as a texture *)
+(* 
+   Function: render_chessboard
+   Renders the background chessboard.
+   Returns: unit
+*)
+let render_chessboard () = 
+
+  (* Load board image as a texture *)
+  let rend = get_rend() in
   let board =
-    match (Image.load_texture renderer "./assets/board.png") with
+    match (Image.load_texture rend "./assets/board.png") with
     | Error (`Msg e) -> Sdl.log_error 0 "Create texture error: %s" e; exit 1 
     | Ok board -> board
   in
 
-  (* create rect for the space occupied by the board *)
+  (* Create rect for the space occupied by the board *)
   let rect = Sdl.Rect.create
     ~x:!offset_x ~y:!offset_y
     ~w:(!cell_size * board_size) ~h:(!cell_size *board_size)
   in
 
-  (* render board texture onto the new rect *)
-  Sdl.render_copy renderer board ~dst:rect |> ignore;
+  (* Render board texture onto the new rect *)
+  Sdl.render_copy rend board ~dst:rect |> ignore;
 ;;
 
 
-(* RENDERS A SINGLE CHESS PIECE *)
-let render_texture renderer piece = 
+(* 
+   Function: render_texture
+   Renders a single chess piece based on its type and location.
+   Parameters:
+     - piece: The chess piece to be rendered
+   Returns: unit
+*)
+let render_texture piece = 
+  let rend = get_rend() in
 
   (* load corresponding image as a texture *)
-  let tex = match Image.load_texture renderer ("./assets/"^(string_of_piece piece)^".png") with
+  let tex = match Image.load_texture rend ("./assets/"^(string_of_piece piece)^".png") with
     | Error (`Msg e) -> Sdl.log_error 0 "Create texture error: %s" e; exit 1 
     | Ok tex -> tex
   in
@@ -45,11 +66,17 @@ let render_texture renderer piece =
   let rect = new_piece !(piece.row) !(piece.col) in
 
   (* render texture into the new rect *)
-  Sdl.render_copy renderer tex ~dst:rect |> ignore;
+  Sdl.render_copy rend tex ~dst:rect |> ignore;
 ;;
 
 
-let render_selected renderer =
+(* 
+   Function: render_selected
+   Renders the selected piece by highlighting its position with a green rectangle.
+   Returns: unit
+*)
+let render_selected () =
+  let rend = get_rend() in
   let color p = 
     let (row, col) = (!(p.row), !(p.col)) in
     let rect = Sdl.Rect.create
@@ -58,30 +85,39 @@ let render_selected renderer =
       ~w:!cell_size
       ~h:!cell_size 
     in
-    Sdl.set_render_draw_color renderer 0 255 0 128 |> ignore;
-    Sdl.render_fill_rect renderer (Some rect) |> ignore;
+    Sdl.set_render_draw_color rend 0 255 0 128 |> ignore;
+    Sdl.render_fill_rect rend (Some rect) |> ignore;
   in
   match !selected with
   | None -> ()
   | Some p -> color p
 ;;
 
-(*** RENDERS ALL PIECES IN CURRENT STATE ***)
-let render_pieces renderer =
-  List.iter (render_texture renderer) !gs
+(* 
+   Function: render_pieces
+   Renders all pieces in the current game state.
+   Returns: unit
+*)
+let render_pieces () =
+  List.iter (render_texture) !gs
 ;;
 
 
-(*** RE-RENDERS BOARD AND ALL PIECES ***)
-let refresh_window window renderer =
-
-  let (w, h) = (!window_width, !window_height) in
-  if Sdl.get_window_size window <> (w, h) then 
-    update_constants window;
-  render_chessboard renderer;
-  render_selected renderer;
-  render_pieces renderer;
-  Sdl.render_present renderer
+(* 
+   Function: refresh
+   Re-renders the board and all pieces, updating the display.
+   Returns: unit
+*)
+let refresh () =
+  let rend = get_rend() in
+  let (w, h) = (!window_w, !window_h) in
+  if Sdl.get_window_size (get_window ()) <> (w, h) 
+    then update_constants();
+  
+  render_chessboard();
+  render_selected();
+  render_pieces();
+  Sdl.render_present rend
 ;;
 
 

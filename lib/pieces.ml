@@ -1,9 +1,23 @@
-type color = White | Black ;;
-type piece_type = King | Queen | Rook | Bishop | Knight | Pawn ;;
+(* 
+   Type: color
+   Represents the color of a chess piece.
+*)
+type color = White | Black 
+;;
 
 
+(* 
+   Type: piece_type
+   Represents the type of a chess piece.
+*)
+type piece_type = King | Queen | Rook | Bishop | Knight | Pawn 
+;;
 
-(* struct for pieces*)
+
+(* 
+   Type: piece
+   Represents a chess piece with its attributes.
+*)
 type piece = {
   piece : piece_type;
   color : color;
@@ -14,8 +28,13 @@ type piece = {
 ;;
 
 
-
-(* converts a chess piece to a string describing it *)
+(* 
+   Function: string_of_piece
+   Converts a chess piece to the name of its texture file.
+   Parameters:
+     - p: The chess piece
+   Returns: string
+*)
 let string_of_piece p = 
 
   let piece = match p.piece with
