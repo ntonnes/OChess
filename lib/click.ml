@@ -24,29 +24,18 @@ let process window x y renderer =
     begin match validate p coord with
     | false -> 
       selected := None;
-<<<<<<< HEAD
-      refresh_window window renderer !gs
-=======
       refresh_window window renderer 
->>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
-    
+
     | true -> 
       selected := None;
       p.row := fst coord;
       p.col := snd coord;
-<<<<<<< HEAD
-      refresh_window window renderer !gs
-=======
       refresh_window window renderer 
->>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
+
 
     end;
     
   | None -> 
     get_selected coord;
-<<<<<<< HEAD
-    refresh_window window renderer !gs
-=======
     refresh_window window renderer
->>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
 ;;

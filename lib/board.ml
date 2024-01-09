@@ -1,7 +1,5 @@
 open Pieces 
 
-type game_state = piece list
-
 (* initializes a list of pieces that corresponds to a new chess game *)
 (* association list *)
 let new_game () : piece list = 

@@ -1,6 +1,6 @@
 open Tsdl
 open Pieces
-open Board
+
 
 let cell_size = ref 100
 let board_size = 8
@@ -9,11 +9,15 @@ let window_height = ref (!cell_size * board_size)
 let offset_x = ref 0
 let offset_y = ref 0
 let selected : piece option ref = ref None
+type game_state = piece list
 let gs : game_state ref = ref []
-<<<<<<< HEAD
-=======
 
->>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
+let interface () : bool array array = 
+  let arr = Array.make_matrix 8 8 false in
+  let update p = arr.(!(p.row)).(!(p.col)) <- true in
+  List.iter update !gs;
+  arr
+;;
 
 let update_constants window = 
   match Sdl.get_window_size window with

@@ -73,22 +73,14 @@ let render_pieces renderer =
 
 
 (*** RE-RENDERS BOARD AND ALL PIECES ***)
-<<<<<<< HEAD
-let refresh_window window renderer gs =
-=======
 let refresh_window window renderer =
->>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
 
   let (w, h) = (!window_width, !window_height) in
   if Sdl.get_window_size window <> (w, h) then 
     update_constants window;
   render_chessboard renderer;
   render_selected renderer;
-<<<<<<< HEAD
-  render_pieces renderer gs;
-=======
   render_pieces renderer;
->>>>>>> a6eff91 (implemented buggy capture functionality; need to implement checking path)
   Sdl.render_present renderer
 ;;
 
