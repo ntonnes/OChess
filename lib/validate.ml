@@ -35,15 +35,22 @@ let valid_pawn_capture piece dest =
   | _ -> false
 ;;
 
+let valid_pawn_forward dest = 
+  let pred p = dest = (!(p.row), !(p.col)) in
+  match List.find_opt pred !gs with
+  | None -> true
+  | _ -> false
+;;
+
 let validate_pawn piece dx dy dest = 
   if piece.color = White then 
     if !(piece.first) && dx = 2 && dy = 0 && !(piece.first) then true
-    else if dx = 1 && dy = 0 then true
+    else if dx = 1 && dy = 0 then valid_pawn_forward dest
     else if dx = 1 && abs dy = 1 then valid_pawn_capture piece dest
     else false
   else
     if !(piece.first) && dx = -2 && dy = 0 && !(piece.first) then true
-    else if dx = -1 && dy = 0 then true  
+    else if dx = -1 && dy = 0 then valid_pawn_forward dest
     else if dx = -1 && abs dy = 1 then valid_pawn_capture piece dest
     else false
   ;;
