@@ -1,7 +1,6 @@
 open Pieces
 open Globals
 open Move
-open Win
 
 
 (* 
@@ -41,15 +40,22 @@ let illegal_jump piece dest =
 let try_dest piece dest = 
   let pred p = dest = (!(p.row), !(p.col)) in
   match List.find_opt pred !gs with
-  | None -> true
+  | None -> piece.first := false; true
   | Some x when x.color = piece.color -> false
   | Some x -> 
-    if x.piece = King then win x.color;
     let pred p = x <> p in
     gs := List.filter pred (!gs);
-    true
+    piece.first := false;
+    if x.piece = King then victor := Some piece.color;
+    match !turn with
+    | Black -> 
+      captures_black := List.append [x] !captures_black; true
+    | White -> 
+      captures_white := List.append [x] !captures_white; true
 ;;
 
+let correct_turn piece = 
+  piece.color = !turn
 
 (* 
    Function: validate
@@ -69,6 +75,7 @@ let validate piece dest =
     | Rook -> move_rook dx dy
     | Pawn -> move_pawn piece dx dy dest
   in
-  if not (illegal_jump piece dest)  && try_move && (try_dest piece dest) then 
-    begin piece.first := false; true end
+  if not (illegal_jump piece dest) && try_move && correct_turn piece then 
+    try_dest piece dest
   else false
+;;

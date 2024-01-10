@@ -16,6 +16,10 @@ let rend : Sdl.renderer option ref = ref None
 let selected : piece option ref = ref None
 type game_state = piece list
 let gs : game_state ref = ref []
+let turn : color ref = ref White
+let victor : color option ref = ref None
+let captures_black : piece list ref = ref []
+let captures_white : piece list ref = ref []
 
 
 (* 
@@ -51,6 +55,18 @@ let update_constants () =
   window_w := w; 
   window_h := h; 
   cell_size := (min w h)/8;
-  offset_x := (w - (!cell_size *8)) / 2;
-  offset_y := (h - (!cell_size *8)) / 2;
+  offset_x := ((w - (!cell_size *8)) / 2);
+  offset_y := ((h - (!cell_size *8)) / 2);
+;;
+
+
+(* 
+   Function: end_turn
+   Changes the variable tracking whose turn it currently is.
+   Returns: none
+*)
+let end_turn () = 
+  match !turn with
+  | Black -> turn := White
+  | White -> turn := Black
 ;;

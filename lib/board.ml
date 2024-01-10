@@ -21,7 +21,7 @@ let make piece color row col =
    Initializes a list of pieces that corresponds to a new chess game.
    Returns: piece list
 *)
-let new_game () : piece list = 
+let new_board () : piece list = 
   [
     make Rook   Black 0 0;
     make Knight Black 0 1;

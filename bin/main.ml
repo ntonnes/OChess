@@ -1,30 +1,39 @@
 open Tsdl
+open Tsdl_ttf
 open Chess
 
 (* Main application *)
 let main () = 
 
-  match Sdl.init Sdl.Init.(video + events + audio) with                        (* try to initialize application *)
+  (* Initialize SDL with required components *)
+  match Sdl.init Sdl.Init.(video + events + audio) with                        
   | Error (`Msg e) -> Sdl.log_error 0 "Init error: %s" e; exit 1
   | Ok () -> 
     
-    match Sdl.create_window ~w:800 ~h:800 "OChess" Sdl.Window.opengl with (* try to create an empty window *)
+    (* Create an SDL window with OpenGL support *)
+    match Sdl.create_window ~w:1200 ~h:800 "OChess" Sdl.Window.opengl with 
     | Error (`Msg e) -> Sdl.log_error 0 "Create window error: %s" e; exit 1 
     | Ok windw -> 
       Globals.window := (Some windw);
-
-      match Sdl.create_renderer windw with                           (* try to create an empty renderer *)
+      
+      (* Create an SDL renderer for the window *)
+      match Sdl.create_renderer windw with                           
       | Error (`Msg e) -> Sdl.log_error 0 "Create renderer error: %s" e; exit 1
       | Ok renderer ->
         Globals.rend := (Some renderer);
-        
-        Loop.event_loop (); (* enter event loop *)                       
-        (* close application *)
-        Sdl.destroy_renderer renderer; 
-        Sdl.destroy_window windw;
-        Sdl.quit ();
-        exit 0
 
+        match Ttf.init () with
+        | Error (`Msg e) -> Sdl.log "SDL_ttf initialization error: %s" e; exit 1
+        | Ok () ->
+        
+          (* Enter the main event loop of the application *)
+          Loop.event_loop ();
+          
+          (* Clear memory upon exiting event loop*)                      
+          Sdl.destroy_renderer renderer; 
+          Sdl.destroy_window windw;
+          Sdl.quit ();
+          exit 0
 
 (* Runs on execution *)
 let () = main ()

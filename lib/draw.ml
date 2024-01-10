@@ -2,6 +2,8 @@ open Tsdl
 open Globals
 open Pieces
 open Tsdl_image
+open Sidebar
+open Win
 
 
 (* 
@@ -43,6 +45,7 @@ let render_chessboard () =
 
   (* Render board texture onto the new rect *)
   Sdl.render_copy rend board ~dst:rect |> ignore;
+  Sdl.destroy_texture board;
 ;;
 
 
@@ -67,6 +70,7 @@ let render_texture piece =
 
   (* render texture into the new rect *)
   Sdl.render_copy rend tex ~dst:rect |> ignore;
+  Sdl.destroy_texture tex;
 ;;
 
 
@@ -85,7 +89,7 @@ let render_selected () =
       ~w:!cell_size
       ~h:!cell_size 
     in
-    Sdl.set_render_draw_color rend 0 255 0 128 |> ignore;
+    Sdl.set_render_draw_color rend 0 255 0 255 |> ignore;
     Sdl.render_fill_rect rend (Some rect) |> ignore;
   in
   match !selected with
@@ -115,9 +119,14 @@ let refresh () =
     then update_constants();
   
   render_chessboard();
+  render_sidebars();
   render_selected();
   render_pieces();
-  Sdl.render_present rend
+  render_turn_text ();
+  Sdl.render_present rend;
+  match !victor with
+  | None -> ()
+  | Some c -> winner c
 ;;
 
 

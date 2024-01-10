@@ -1,8 +1,7 @@
 open Tsdl
-open Globals
-open Board
 open Draw
 open Click
+open Win
 
 
 (* 
@@ -13,7 +12,7 @@ open Click
 let event_loop () =
 
   (* Initialize new game pieces and the event to wait on in the loop *)
-  gs := new_game (); 
+  new_game (); 
   let e = Sdl.Event.create () in
   
   (* Helper functions to make things more readable *)

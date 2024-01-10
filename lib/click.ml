@@ -22,7 +22,7 @@ let cell_of_pixel x y : (int * int) =
    Returns: none
 *)
 let get_selected (row, col) : unit = 
-  let pred p = (row, col) = (!(p.row), !(p.col)) in
+  let pred p = (row, col) = (!(p.row), !(p.col)) && p.color = !turn in
   match List.find_opt pred !gs with
   | None -> ()
   | Some x -> selected := Some x
@@ -42,7 +42,7 @@ let process x y =
   | Some p -> selected := None;
     begin match validate p (row, col) with
     | false -> ()
-    | true -> p.row := row; p.col := col;
+    | true -> p.row := row; p.col := col; end_turn ();
     end;
     refresh ();
 
