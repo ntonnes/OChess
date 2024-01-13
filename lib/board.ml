@@ -1,6 +1,5 @@
 open Pieces 
 
-
 (*
    Function: make
    Creates a new piece with the specified attributes.

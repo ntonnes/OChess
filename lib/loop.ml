@@ -16,11 +16,6 @@ let event_loop () =
   let e = Sdl.Event.create () in
   
   (* Helper functions to make things more readable *)
-  let mb_down () = 
-    let x, y = Sdl.Event.(get e mouse_button_x, get e mouse_button_y) in
-    if Sdl.Event.(get e mouse_button_button) = Sdl.Button.left 
-      then process x y
-  in  
   let event_type ()= Sdl.Event.(enum (get e typ)) in
   let next_event ()= Sdl.wait_event (Some e) in
 
@@ -34,7 +29,7 @@ let event_loop () =
       match event_type () with  
       | `Quit -> ()                            
       | `Window_event -> refresh (); loop ()
-      | `Mouse_button_down -> mb_down (); loop ()
+      | `Mouse_button_down -> process_click e; loop ()
       | _ -> loop ()                           
   in
   loop ()   

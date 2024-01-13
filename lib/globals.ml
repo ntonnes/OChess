@@ -3,10 +3,9 @@ open Pieces
 
 
 (* Constants for navigation *)
-let cell_size = ref 100
-let board_size = 8
-let window_w = ref (!cell_size * board_size)
-let window_h = ref (!cell_size * board_size)
+let cs = ref 100
+let window_w = ref (!cs * 8)
+let window_h = ref (!cs * 8)
 let offset_x = ref 0
 let offset_y = ref 0
 
@@ -54,9 +53,9 @@ let update_constants () =
   let (w, h) = Sdl.get_window_size (get_window ()) in
   window_w := w; 
   window_h := h; 
-  cell_size := (min w h)/8;
-  offset_x := ((w - (!cell_size *8)) / 2);
-  offset_y := ((h - (!cell_size *8)) / 2);
+  cs := (min w h)/8;
+  offset_x := ((w - (!cs *8)) / 2);
+  offset_y := ((h - (!cs *8)) / 2);
 ;;
 
 

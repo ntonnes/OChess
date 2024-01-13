@@ -29,13 +29,13 @@ type piece = {
 
 
 (* 
-   Function: string_of_piece
+   Function: file_of_piece
    Converts a chess piece to the name of its texture file.
    Parameters:
      - p: The chess piece
    Returns: string
 *)
-let string_of_piece p = 
+let file_of_piece p = 
 
   let piece = match p.piece with
     | King -> "king"
@@ -51,5 +51,5 @@ let string_of_piece p =
     | White -> "white_"
   in
 
-  color^piece;
+  "./assets/"^color^piece^".png";
 ;;

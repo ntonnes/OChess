@@ -1,3 +1,4 @@
+open Tsdl
 open Globals
 open Pieces
 open Draw
@@ -10,8 +11,8 @@ open Validate
    Returns: (row, col) tuple
 *)
 let cell_of_pixel x y : (int * int) = 
-  let col = (x - !offset_x) / !cell_size in
-  let row = (y - !offset_y) / !cell_size in
+  let col = (x - !offset_x) / !cs in
+  let row = (y - !offset_y) / !cs in
   (row, col)
 ;;
 
@@ -35,7 +36,10 @@ let get_selected (row, col) : unit =
    Updates the selected piece and refreshes the game window accordingly.
    Returns: none
 *)
-let process x y = 
+let process_click e = 
+  let x, y = Sdl.Event.(get e mouse_button_x, get e mouse_button_y) in
+  if Sdl.Event.(get e mouse_button_button) <> Sdl.Button.left 
+    then ();
   let (row, col) = cell_of_pixel x y in
   match !selected with
 
@@ -44,7 +48,7 @@ let process x y =
     | false -> ()
     | true -> p.row := row; p.col := col; end_turn ();
     end;
-    refresh ();
+    refresh();
 
   | None -> get_selected (row, col); refresh()
 ;;

@@ -1,36 +1,17 @@
 open Tsdl
-open Globals
 open Tsdl_ttf
+open Globals
+open Utils
+open Pieces
 
-let render_left () =
-  let rend = get_rend () in
-  let rect = Sdl.Rect.create ~x:0 ~y:0 ~w:(!offset_x) ~h:(!window_h) in
-  Sdl.set_render_draw_color rend 118 118 118 255 |> ignore;
-  Sdl.render_fill_rect rend (Some rect) |> ignore
-;;
 
-let render_right () =
-  let rend = get_rend () in
-  let rect = Sdl.Rect.create ~x:(!offset_x+(!cell_size*8)) ~y:0 ~w:(!offset_x) ~h:(!window_h) in
-  Sdl.set_render_draw_color rend 118 118 118 255 |> ignore;
-  Sdl.render_fill_rect rend (Some rect) |> ignore
-;;
 
-let render_sidebars () =
-  render_right ();
-  render_left ();
-;;
-
-let get_texture_dimensions texture =
-  match Sdl.query_texture texture with 
-  | Error (`Msg e) -> Sdl.log "Font loading error: %s" e; exit 1
-  | Ok query ->
-    let f = fun (_, _, (c, d)) -> (c, d) in
-    f query
-  ;;
-;;
-
+(*function*)
 let render_text size text x y=
+  let get_texture_dimensions tex =
+    let f = fun (_, _, (c, d)) -> (c, d) in
+    f (query_tex tex)
+  in
   let font =
     match Ttf.open_font ("./assets/bold700.ttf") size with
     | Error (`Msg e) -> Sdl.log "Font loading error: %s" e; exit 1
@@ -53,15 +34,52 @@ let render_text size text x y=
   ;;
 ;;
 
-let render_turn_text () = 
+
+(*function*)
+let render_info_text () = 
   let text = 
     match !turn with
     | Black -> "Black's Turn"
     | White -> "White's Turn"
   in
-  render_text 28 text (!offset_x/2) 20
+  render_text 28 text (!offset_x/2) 20;
+  render_text 20 "Black's Captures" (!offset_x + (!offset_x/2) + (!cs*8)) 20;
+  render_text 20 "White's Captures" (!offset_x + (!offset_x/2) + (!cs*8)) ((!window_h/2)+20);
+;;
 
-let render_captures_text () = 
-  render_text 20 "Black's Captures" (!offset_x + (!offset_x/2) + (!cell_size*8)) 20;
-  render_text 20 "White's Captures" (!offset_x + (!offset_x/2) + (!cell_size*8)) ((!window_h/2)+20);
 
+(*function*)
+let render_capture piece acc_w acc_h = 
+  let tex = load_tex (file_of_piece piece) in
+  let rect = 
+    Sdl.Rect.create ~x:(!offset_x+(!cs*8)+10+acc_w) ~y:acc_h ~w:40 ~h:40
+  in
+  paste_tex tex rect;
+;;
+
+
+(*function*)
+let render_captures ()=
+  let rec go ls acc_w acc_h = 
+    match ls with
+    | [] -> ()
+    | (piece :: pieces) -> 
+      render_capture piece acc_w acc_h;
+      if acc_w = 150 then
+        go pieces 0 (acc_h+40) 
+      else 
+        go pieces (acc_w+30) acc_h 
+  in
+  go !captures_black 0 60 ;
+  go !captures_white 0 ((!window_h/2)+60)
+;;
+
+
+(*function*)
+let render_sidebars () =
+  let right = Sdl.Rect.create ~x:(!offset_x+(!cs*8)) ~y:0 ~w:(!offset_x) ~h:(!cs *8) in
+  let left = Sdl.Rect.create ~x:0 ~y:0 ~w:(!offset_x) ~h:(!cs * 8) in
+  List.iter (draw_rect 118 118 118 255) [left; right];
+  render_info_text();
+  render_captures();
+;;

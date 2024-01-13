@@ -1,6 +1,6 @@
 open Pieces
 open Globals
-open Move
+open Pawn
 
 
 (* 
@@ -68,11 +68,11 @@ let correct_turn piece =
 let validate piece dest = 
   let dx, dy = !(piece.row)-(fst dest), !(piece.col)-(snd dest) in
   let try_move = match piece.piece with
-    | King -> move_king dx dy
-    | Queen -> move_queen dx dy
-    | Bishop -> move_bishop dx dy
-    | Knight -> move_knight dx dy
-    | Rook -> move_rook dx dy
+    | King -> (abs dx<2) && (abs dy<2) 
+    | Queen -> (dx=0 && dy<>0) || (dy=0 && dx<>0) || (abs dx=abs dy)
+    | Bishop -> (abs dx=abs dy)
+    | Knight -> (abs dx=1 && abs dy=2) || (abs dy=1 && abs dx=2)
+    | Rook -> (dx = 0 && dy <> 0) || (dy = 0 && dx <> 0)
     | Pawn -> move_pawn piece dx dy dest
   in
   if not (illegal_jump piece dest) && try_move && correct_turn piece then 
