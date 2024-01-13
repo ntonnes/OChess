@@ -11,8 +11,12 @@ let new_game () =
   gs := new_board ();
   turn := White;
   victor := None;
+  captures_white := [];
+  captures_black := []
 ;;
 
+
+let game_over() = !victor <> None
 
 (* 
    Function: win
@@ -37,7 +41,7 @@ let winner color =
   (* Display popup with the winning message and options *)
   match Sdl.show_message_box { 
     flags = information;
-    window = None;
+    window = (None);
     title = "Game Over";
     message = message;
     buttons = buttons;
@@ -47,5 +51,5 @@ let winner color =
   | Ok result ->
     match result with
     | 1 -> new_game ()
-    | 2 -> exit 0;
+    | 2 -> ();
     | _ -> ()

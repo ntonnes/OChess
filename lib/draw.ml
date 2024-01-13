@@ -4,6 +4,7 @@ open Pieces
 open Tsdl_image
 open Sidebar
 open Win
+open Captures
 
 
 (* 
@@ -122,7 +123,9 @@ let refresh () =
   render_sidebars();
   render_selected();
   render_pieces();
-  render_turn_text ();
+  render_turn_text();
+  render_captures_text();
+  render_captures();
   Sdl.render_present rend;
   match !victor with
   | None -> ()

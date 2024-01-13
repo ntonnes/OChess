@@ -30,7 +30,7 @@ let get_texture_dimensions texture =
   ;;
 ;;
 
-let render_text size text =
+let render_text size text x y=
   let font =
     match Ttf.open_font ("./assets/bold700.ttf") size with
     | Error (`Msg e) -> Sdl.log "Font loading error: %s" e; exit 1
@@ -46,7 +46,7 @@ let render_text size text =
   | Error (`Msg e) -> Sdl.log "Texture creation error: %s" e; exit 1
   | Ok texture ->
     let dims = get_texture_dimensions texture in
-    let dst_rect = Sdl.Rect.create ~x:(((!offset_x- fst dims))/2) ~y:20 ~w:(fst dims) ~h:(snd dims) in
+    let dst_rect = Sdl.Rect.create ~x:(x - (fst dims/2)) ~y:y ~w:(fst dims) ~h:(snd dims) in
     ignore (Sdl.render_copy rend texture ~dst:dst_rect);
     Sdl.destroy_texture texture;
     Sdl.free_surface surface
@@ -59,4 +59,9 @@ let render_turn_text () =
     | Black -> "Black's Turn"
     | White -> "White's Turn"
   in
-  render_text 28 text
+  render_text 28 text (!offset_x/2) 20
+
+let render_captures_text () = 
+  render_text 20 "Black's Captures" (!offset_x + (!offset_x/2) + (!cell_size*8)) 20;
+  render_text 20 "White's Captures" (!offset_x + (!offset_x/2) + (!cell_size*8)) ((!window_h/2)+20);
+

@@ -30,6 +30,7 @@ let event_loop () =
     | Error (`Msg e) -> Sdl.log_error 1 " Error while waiting for event: %s" e; () 
     | Ok () ->
       Sdl.log "%a" Log.pp_event e;
+      if game_over() then () else
       match event_type () with  
       | `Quit -> ()                            
       | `Window_event -> refresh (); loop ()
