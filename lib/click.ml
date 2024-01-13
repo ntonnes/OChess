@@ -5,10 +5,10 @@ open Draw
 open Validate
 
 
-(* 
-   Function: cell_of_pixel
-   Takes screen coordinates (x, y) and calculates the corresponding chess board cell (row, col).
-   Returns: (row, col) tuple
+(** [cell_of_pixel x y] converts pixel coordinates to chessboard cell coordinates.
+    @param x The x-coordinate of the pixel.
+    @param y The y-coordinate of the pixel.
+    @return A tuple representing the row and column of the corresponding chessboard cell.
 *)
 let cell_of_pixel x y : (int * int) = 
   let col = (x - !offset_x) / !cs in
@@ -17,10 +17,9 @@ let cell_of_pixel x y : (int * int) =
 ;;
 
 
-(* 
-   Function: get_selected
-   Takes chess board coordinates (row, col) and updates the selected piece variable.
-   Returns: none
+(** [get_selected (row, col)] sets the [selected] reference to the piece at the specified cell coordinates.
+    @param row The row of the chessboard cell.
+    @param col The column of the chessboard cell.
 *)
 let get_selected (row, col) : unit = 
   let pred p = (row, col) = (!(p.row), !(p.col)) && p.color = !turn in
@@ -30,11 +29,8 @@ let get_selected (row, col) : unit =
 ;;
 
 
-(* 
-   Function: process
-   Handles the processing of mouse clicks on the chess board.
-   Updates the selected piece and refreshes the game window accordingly.
-   Returns: none
+(** [process_click e] processes a mouse click event, updating the game state accordingly.
+    @param e The SDL event representing the mouse click.
 *)
 let process_click e = 
   let x, y = Sdl.Event.(get e mouse_button_x, get e mouse_button_y) in

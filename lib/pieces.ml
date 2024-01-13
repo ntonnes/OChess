@@ -1,23 +1,10 @@
-(* 
-   Type: color
-   Represents the color of a chess piece.
-*)
+
 type color = White | Black 
 ;;
 
-
-(* 
-   Type: piece_type
-   Represents the type of a chess piece.
-*)
 type piece_type = King | Queen | Rook | Bishop | Knight | Pawn 
 ;;
 
-
-(* 
-   Type: piece
-   Represents a chess piece with its attributes.
-*)
 type piece = {
   piece : piece_type;
   color : color;
@@ -28,12 +15,10 @@ type piece = {
 ;;
 
 
-(* 
-   Function: file_of_piece
-   Converts a chess piece to the name of its texture file.
-   Parameters:
-     - p: The chess piece
-   Returns: string
+(** [file_of_piece p] returns the file path of the texture corresponding to the given chess piece.
+    The file path is constructed based on the piece type and color.
+    @param p The chess piece.
+    @return The file path of the texture for the chess piece.
 *)
 let file_of_piece p = 
 

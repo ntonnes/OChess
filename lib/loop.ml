@@ -4,10 +4,11 @@ open Click
 open Win
 
 
-(* 
-   Function: event_loop
-   Initiates the event loop for handling user inputs and updating the game state.
-   Returns: unit
+(** [event_loop ()] is the main event loop for the chess game.
+    Initializes new game pieces and waits for SDL events in a loop.
+    The loop processes different types of events like quitting, window events, and mouse button clicks.
+    The loop continues until the user quits or an error occurs.
+    @raise [Sdl_error] if there is an error while waiting for an event.
 *)
 let event_loop () =
 

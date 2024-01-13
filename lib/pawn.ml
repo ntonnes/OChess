@@ -2,19 +2,17 @@ open Pieces
 open Globals
 
 
-(* 
-   Function: move_pawn
-   Checks if the given vector (dx, dy) represents a valid movement for the given pawn.
-   Parameters:
-     - piece: The pawn piece
-     - dx: Change in x-coordinate
-     - dy: Change in y-coordinate
-     - dst: The destination coordinate
-   Returns: bool
+(** [move_pawn piece dx dy dst] checks if a pawn move is valid based on its color and destination coordinates.
+    It considers the initial two-square move, regular one-square move, and diagonal capture moves.
+    @param piece The pawn piece to be moved.
+    @param dx The change in the row position (positive for forward, negative for backward).
+    @param dy The change in the column position (positive for right, negative for left).
+    @param dst The destination coordinates (row, col) on the chessboard.
+    @return [true] if the move is valid, [false] otherwise.
 *)
 let move_pawn piece dx dy dst =
 
-  (* Gets piece option at the destination tile *)
+  (* Gets piece at the destination tile *)
   let target () = 
     let pred p = dst = (!(p.row), !(p.col)) in
     List.find_opt pred !gs
@@ -27,7 +25,7 @@ let move_pawn piece dx dy dst =
     | _ -> false
   in
 
-  (* Checks if the target it empty *)
+  (* Checks if the target is empty *)
   let valid_fwd () = 
     match target() with
     | None -> true

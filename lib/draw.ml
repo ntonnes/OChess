@@ -6,10 +6,8 @@ open Win
 open Utils
 
 
-(* 
-   Function: render_chessboard
-   Renders the background chessboard.
-   Returns: unit
+(** [render_chessboard ()] renders the chessboard texture on the game window.
+    Loads the chessboard texture and renders it, adjusted for the window offset.
 *)
 let render_chessboard () = 
   let board = load_tex "./assets/board.png" in
@@ -21,13 +19,10 @@ let render_chessboard () =
 ;;
 
 
-(* 
-   Function: new_piece
-   Creates a new SDL.Rect representing a chess piece at the specified location.
-   Parameters:
-     - row: The row on the chess board
-     - col: The column on the chess board
-   Returns: SDL.Rect
+(** [new_piece row col] creates a new SDL rectangle representing the position and size of a chess piece on the window.
+    @param row The row on the chessboard.
+    @param col The column on the chessboard.
+    @return An SDL rectangle representing the position and size of the chess piece.
 *)
 let new_piece row col = 
   let cs = !cs in
@@ -38,12 +33,8 @@ let new_piece row col =
 ;;
 
 
-(* 
-   Function: render_texture
-   Renders a single chess piece based on its type and location.
-   Parameters:
-     - piece: The chess piece to be rendered
-   Returns: unit
+(** [render_pieces ()] renders all chess pieces on the game window.
+    Iterates through the list of game pieces, loads their textures, and renders them into the window.
 *)
 let render_pieces () = 
   let go piece =
@@ -55,10 +46,8 @@ let render_pieces () =
 ;;
 
 
-(* 
-   Function: render_selected
-   Renders the selected piece by highlighting its position with a green rectangle.
-   Returns: unit
+(** [render_selected ()] highlights the currently selected chess piece on the game window.
+    If a piece is selected, it highlights its cell with a semi-transparent green rectangle.
 *)
 let render_selected () =
   let get_rect p = 
@@ -74,10 +63,8 @@ let render_selected () =
 ;;
 
 
-(* 
-   Function: render_pieces
-   Renders all pieces in the current game state.
-   Returns: unit
+(** [render_game ()] renders the entire game on the window.
+    It includes rendering the chessboard, selected piece highlight, and all chess pieces.
 *)
 let render_game () =
   render_chessboard();
@@ -86,23 +73,20 @@ let render_game () =
 ;;
 
 
-(* 
-   Function: refresh
-   Re-renders the board and all pieces, updating the display.
-   Returns: unit
+(** [refresh ()] refreshes the game window with the latest graphics.
+    It checks for window size changes and updates constants accordingly.
+    The function then renders the game, sidebars, and presents the SDL renderer.
+    If there is a game outcome, it displays the winner.
 *)
 let refresh () =
   
-  (* update constants related to window size if necessary *)
   let (w, h) = (!window_w, !window_h) in
   if Sdl.get_window_size (get_window ()) <> (w, h) 
     then update_constants();
   
   render_game();
   render_sidebars();
-
-  let rend = get_rend() in
-  Sdl.render_present rend;
+  Sdl.render_present (get_rend());
 
   match !victor with
   | None -> ()

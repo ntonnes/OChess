@@ -1,24 +1,20 @@
 open Pieces 
 
-(*
-   Function: make
-   Creates a new piece with the specified attributes.
-   Parameters:
-     - piece: The type of chess piece (e.g., Rook, Knight, etc.)
-     - color: The color of the piece (Black or White)
-     - row: The initial row position of the piece on the chess board
-     - col: The initial column position of the piece on the chess board
-   Returns: piece
+
+(** [make piece color row col] creates a new piece with the specified attributes.
+    @param piece The type of chess piece.
+    @param color The color of the piece (Black or White).
+    @param row The initial row position of the piece.
+    @param col The initial column position of the piece.
+    @return A new piece with the given attributes.
 *)
 let make piece color row col = 
   { piece=piece; color=color; first=ref true; row=ref row; col=ref col; }
 ;;
 
 
-(*
-   Function: new_game
-   Initializes a list of pieces that corresponds to a new chess game.
-   Returns: piece list
+(** [new_board ()] creates a new chess board with the initial piece positions.
+    @return A list of pieces representing the initial state of the chess board.
 *)
 let new_board () : piece list = 
   [

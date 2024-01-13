@@ -2,16 +2,20 @@ open Tsdl
 open Pieces
 
 
-(* Constants for navigation *)
+(* References for pixel navigation. *)
 let cs = ref 100
 let window_w = ref (!cs * 8)
 let window_h = ref (!cs * 8)
 let offset_x = ref 0
 let offset_y = ref 0
 
-(* Useful global valiables *)
+
+(* References for application. *)
 let window : Sdl.window option ref = ref None
 let rend : Sdl.renderer option ref = ref None
+
+
+(* References for gameplay. *)
 let selected : piece option ref = ref None
 type game_state = piece list
 let gs : game_state ref = ref []
@@ -21,10 +25,9 @@ let captures_black : piece list ref = ref []
 let captures_white : piece list ref = ref []
 
 
-(* 
-   Function: get_window
-   Retrieves the SDL window; exits with an error if the window is not available.
-   Returns: SDL window
+(** [get_window ()] returns the game window reference.
+    @return The game window reference.
+    @raise [Sdl_error] if the window reference is [None].
 *)
 let get_window () = 
   match !window with
@@ -33,10 +36,9 @@ let get_window () =
 ;;
 
 
-(* 
-   Function: get_rend
-   Retrieves the SDL renderer; exits with an error if the renderer is not available.
-   Returns: SDL renderer
+(** [get_rend ()] returns the SDL renderer reference.
+    @return The SDL renderer reference.
+    @raise [Sdl_error] if the renderer reference is [None].
 *)
 let get_rend () = 
   match !rend with
@@ -44,10 +46,9 @@ let get_rend () =
   | Some renderer -> renderer
 ;;
 
-(* 
-   Function: update_constants
-   Updates global navigation variables based on the current window size.
-   Returns: none
+
+(** [update_constants ()] updates the global constants based on the current window size.
+    Calculates the new chess square size, horizontal and vertical offsets.
 *)
 let update_constants () = 
   let (w, h) = Sdl.get_window_size (get_window ()) in
@@ -59,10 +60,7 @@ let update_constants () =
 ;;
 
 
-(* 
-   Function: end_turn
-   Changes the variable tracking whose turn it currently is.
-   Returns: none
+(** [end_turn ()] switches the current turn between Black and White. 
 *)
 let end_turn () = 
   match !turn with

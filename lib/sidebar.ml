@@ -5,24 +5,38 @@ open Utils
 open Pieces
 
 
+(** [render_text size text x y] renders the specified text onto the screen at the given coordinates.
+    The function loads a font, renders the text onto a surface, creates a texture from the surface,
+    and finally renders the texture on the screen using the specified renderer. The text is centered
+    at the provided coordinates.
 
-(*function*)
+    @param size The font size for rendering the text.
+    @param text The text string to render.
+    @param x The x-coordinate for the center of the rendered text.
+    @param y The y-coordinate for the rendered text.
+    @requires The global state variables and functions related to SDL, TTF, and rendering operations.
+    @ensures The specified text is rendered on the screen at the given coordinates.
+*)
 let render_text size text x y=
+
   let get_texture_dimensions tex =
     let f = fun (_, _, (c, d)) -> (c, d) in
     f (query_tex tex)
   in
+
   let font =
     match Ttf.open_font ("./assets/bold700.ttf") size with
     | Error (`Msg e) -> Sdl.log "Font loading error: %s" e; exit 1
     | Ok font -> font
   in
+
   let rend = get_rend () in
   let surface = 
     match Ttf.render_text_solid font text (Sdl.Color.create ~r:255 ~g:255 ~b:255 ~a:255) with
-    | Error (`Msg e) -> Sdl.log "Font loading error: %s" e; exit 1
+    | Error (`Msg e) -> Sdl.log "Surface creation error: %s" e; exit 1
     | Ok surface -> surface
   in
+
   match Sdl.create_texture_from_surface rend surface with
   | Error (`Msg e) -> Sdl.log "Texture creation error: %s" e; exit 1
   | Ok texture ->
@@ -35,7 +49,12 @@ let render_text size text x y=
 ;;
 
 
-(*function*)
+(** [render_info_text ()] renders all text to the screen.
+    The function displays whose turn it is (Black or White) and also renders headers for the capture lists
+    for both Black and White players. The text is positioned on the screen using predefined offsets.
+    @requires The global state variables [turn], [offset_x], [cs], and [captures_black] and [captures_white] lists.
+    @ensures Textual information is rendered on the screen.
+*)
 let render_info_text () = 
   let text = 
     match !turn with
@@ -48,7 +67,15 @@ let render_info_text () =
 ;;
 
 
-(*function*)
+(** [render_capture piece acc_w acc_h] renders a captured chess piece on the screen.
+    The function loads the texture corresponding to the given [piece], creates a rectangle for rendering,
+    and then pastes the texture onto the screen.
+    @param piece The chess piece to be rendered.
+    @param acc_w The accumulated width offset for positioning.
+    @param acc_h The accumulated height offset for positioning.
+    @requires The global state variable [offset_x] and [cs].
+    @ensures The captured chess piece is rendered on the screen.
+*)
 let render_capture piece acc_w acc_h = 
   let tex = load_tex (file_of_piece piece) in
   let rect = 
@@ -58,7 +85,12 @@ let render_capture piece acc_w acc_h =
 ;;
 
 
-(*function*)
+(** [render_captures ()] renders the captured chess pieces on the screen.
+    The function iterates through the lists of captured pieces for Black and White players,
+    rendering each piece using [render_capture]. The pieces are arranged in rows with a predefined spacing.
+    @requires The global state variables [captures_black], [captures_white], [offset_x], [cs], and [window_h].
+    @ensures Captured chess pieces are rendered on the screen.
+*)
 let render_captures ()=
   let rec go ls acc_w acc_h = 
     match ls with
@@ -75,7 +107,12 @@ let render_captures ()=
 ;;
 
 
-(*function*)
+(** [render_sidebars ()] renders the sidebars on the screen.
+    The function creates rectangles for the left and right sidebars and fills them with a gray color.
+    It then calls [render_info_text] and [render_captures] to populate the sidebars on the screen.
+    @requires The global state variables [offset_x], [cs], [captures_black], [captures_white], and [window_h].
+    @ensures Sidebars are rendered on the screen.
+*)
 let render_sidebars () =
   let right = Sdl.Rect.create ~x:(!offset_x+(!cs*8)) ~y:0 ~w:(!offset_x) ~h:(!cs *8) in
   let left = Sdl.Rect.create ~x:0 ~y:0 ~w:(!offset_x) ~h:(!cs * 8) in

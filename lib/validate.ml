@@ -3,13 +3,11 @@ open Globals
 open Pawn
 
 
-(* 
-   Function: illegal_jump
-   Checks if there is an obstacle in the path of the piece's move.
-   Parameters:
-     - piece: The chess piece
-     - dest: Destination coordinates
-   Returns: bool
+(** [illegal_jump piece dest] checks if there are obstacles on the path of a move for non-knight and non-king pieces.
+    It recursively checks for obstacles in the row, column, or diagonal direction based on the destination coordinates.
+    @param piece The chess piece to be moved.
+    @param dest The destination coordinates (row, col) on the chessboard.
+    @return [true] if there is an obstacle on the path, [false] otherwise.
 *)
 let illegal_jump piece dest = 
   let rec has_obstacle row col acc =
@@ -24,18 +22,16 @@ let illegal_jump piece dest =
       has_obstacle new_row new_col (acc+1)
   in
   match piece.piece with
-  | King | Knight -> false (* No need to check for obstacles for King and Knight *)
+  | King | Knight -> false 
   | _ -> has_obstacle (fst dest) (snd dest) 0
 ;;
 
 
-(* 
-   Function: try_dest
-   Attempts to make a move to the destination and handles the outcome.
-   Parameters:
-     - piece: The chess piece
-     - dest: Destination coordinates
-   Returns: bool
+(** [try_dest piece dest] attempts to move a piece to the destination, capturing opponent pieces if necessary.
+    It updates the game state, captures, and checks for a victory condition.
+    @param piece The chess piece to be moved.
+    @param dest The destination coordinates (row, col) on the chessboard.
+    @return [true] if the move is successful, [false] otherwise.
 *)
 let try_dest piece dest = 
   let pred p = dest = (!(p.row), !(p.col)) in
@@ -54,16 +50,12 @@ let try_dest piece dest =
       captures_white := List.append [x] !captures_white; true
 ;;
 
-let correct_turn piece = 
-  piece.color = !turn
 
-(* 
-   Function: validate
-   Validates the move of a chess piece to the destination coordinates.
-   Parameters:
-     - piece: The chess piece
-     - dest: Destination coordinates
-   Returns: bool
+(** [validate piece dest] checks if a move is valid for a given chess piece to the specified destination.
+    It considers the piece type and calls the appropriate validation function.
+    @param piece The chess piece to be moved.
+    @param dest The destination coordinates (row, col) on the chessboard.
+    @return [true] if the move is valid, [false] otherwise.
 *)
 let validate piece dest = 
   let dx, dy = !(piece.row)-(fst dest), !(piece.col)-(snd dest) in
@@ -75,7 +67,7 @@ let validate piece dest =
     | Rook -> (dx = 0 && dy <> 0) || (dy = 0 && dx <> 0)
     | Pawn -> move_pawn piece dx dy dest
   in
-  if not (illegal_jump piece dest) && try_move && correct_turn piece then 
+  if not (illegal_jump piece dest) && try_move && (piece.color = !turn) then 
     try_dest piece dest
   else false
 ;;
