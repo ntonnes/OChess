@@ -1,6 +1,27 @@
 open Pieces
 open Validate
 
+
+let is_in_check color gs =
+  let king_opt = List.find_opt (fun piece -> piece.piece=King && piece.color=color) gs in
+  match king_opt with
+  | Some king ->
+    let dst = (!(king.row), !(king.col)) in
+    List.exists (fun p -> validate p dst gs) gs
+  | None -> false
+;;
+
+
+let get_valid_moves piece =
+  let all_dst = List.init 8 (fun row ->
+      List.init 8 (fun col -> (row, col))
+    ) |> List.flatten
+  in 
+  List.filter (fun dst -> good_move piece dst) all_dst
+;;
+
+
+(*
 let possible_moves king gs =
   let (r, c) = (!(king.row), !(king.col)) in
   let adj_list = [
@@ -15,13 +36,6 @@ let possible_moves king gs =
 ;;
 
 
-let is_square_attacked gs dst color =
-  let opponent_color = if color = White then Black else White in
-  let attacking_pieces = List.filter (fun piece -> piece.color = opponent_color) gs in
-  List.exists (fun piece -> validate piece gs dst) attacking_pieces
-;;
-
-
 let all_moves_attacked gs color =
   let king_opt = List.find_opt (fun piece -> piece.piece=King && piece.color=color) gs in
   match king_opt with
@@ -31,7 +45,7 @@ let all_moves_attacked gs color =
   | None -> false
 ;;
 
-let king_attacked gs color =
+let is_in_check color =
   let king_opt = List.find_opt (fun piece -> piece.piece=King && piece.color=color) gs in
   match king_opt with
   | Some king ->
@@ -39,3 +53,4 @@ let king_attacked gs color =
     List.exists (fun p -> validate p gs dst) gs
   | None -> false
 ;;
+*)

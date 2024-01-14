@@ -3,6 +3,11 @@ open Globals
 open Pawn
 
 
+let get_piece tile = 
+  List.find_opt (fun p -> !(p.row)=(fst tile) && !(p.col)=(snd tile))
+;;
+
+
 (** [illegal_jump piece dest] checks if there are obstacles on the path of a move for non-knight and non-king pieces.
     It recursively checks for obstacles in the row, column, or diagonal direction based on the destination coordinates.
     @param piece The chess piece to be moved.
@@ -33,21 +38,22 @@ let illegal_jump piece dest =
     @param dest The destination coordinates (row, col) on the chessboard.
     @return [true] if the move is successful, [false] otherwise.
 *)
-let try_dest piece dest = 
-  let pred p = dest = (!(p.row), !(p.col)) in
-  match List.find_opt pred !gs with
-  | None -> piece.first := false; true
+let valid_dst piece dest gs = 
+  match get_piece dest gs with
+  | None -> true
   | Some x when x.color = piece.color -> false
-  | Some x -> 
-    let pred p = x <> p in
-    gs := List.filter pred (!gs);
-    piece.first := false;
-    if x.piece = King then victor := Some piece.color;
-    match !turn with
-    | Black -> 
-      captures_black := List.append [x] !captures_black; true
-    | White -> 
-      captures_white := List.append [x] !captures_white; true
+  | Some _ -> true
+;;
+
+let valid_vector piece dest =
+  let dx, dy = !(piece.row)-(fst dest), !(piece.col)-(snd dest) in
+  match piece.piece with
+  | King -> (abs dx<2) && (abs dy<2) 
+  | Queen -> (dx=0 && dy<>0) || (dy=0 && dx<>0) || (abs dx=abs dy)
+  | Bishop -> (abs dx=abs dy)
+  | Knight -> (abs dx=1 && abs dy=2) || (abs dy=1 && abs dx=2)
+  | Rook -> (dx = 0 && dy <> 0) || (dy = 0 && dx <> 0)
+  | Pawn -> move_pawn piece dx dy dest
 ;;
 
 
@@ -57,7 +63,30 @@ let try_dest piece dest =
     @param dest The destination coordinates (row, col) on the chessboard.
     @return [true] if the move is valid, [false] otherwise.
 *)
-let validate piece dest = 
+
+let validate piece dest gs = 
+  not (illegal_jump piece dest) 
+  && (valid_vector piece dest) 
+  && (valid_dst piece dest gs)
+;;
+
+let move piece dest gms = 
+  match get_piece dest gms with
+  | None -> piece.first := false; ()
+  | Some x when x.color = piece.color -> ()
+  | Some x ->
+    let pred p = x <> p in
+    gs := List.filter pred (gms);
+    piece.first := false;
+    if x.piece = King then victor := Some piece.color;
+    match !turn with
+    | Black -> 
+      captures_black := List.append [x] !captures_black;
+    | White -> 
+      captures_white := List.append [x] !captures_white;
+;;
+
+let good_move piece dest = 
   let dx, dy = !(piece.row)-(fst dest), !(piece.col)-(snd dest) in
   let try_move = match piece.piece with
     | King -> (abs dx<2) && (abs dy<2) 
@@ -67,7 +96,11 @@ let validate piece dest =
     | Rook -> (dx = 0 && dy <> 0) || (dy = 0 && dx <> 0)
     | Pawn -> move_pawn piece dx dy dest
   in
-  if not (illegal_jump piece dest) && try_move && (piece.color = !turn) then 
-    try_dest piece dest
+  if not (illegal_jump piece dest) && try_move then 
+    let pred p = dest = (!(p.row), !(p.col)) in
+    match List.find_opt pred !gs with
+    | None -> true
+    | Some x when x.color = piece.color -> false
+    | _ -> true
   else false
 ;;

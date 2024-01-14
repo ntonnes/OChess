@@ -40,9 +40,9 @@ let process_click e =
   match !selected with
 
   | Some p -> selected := None;
-    begin match validate p (row, col) with
+    begin match validate p (row, col) !gs with
     | false -> ()
-    | true -> p.row := row; p.col := col; end_turn ();
+    | true -> move p (row, col) !gs; p.row := row; p.col := col; end_turn ();
     end;
     refresh();
 

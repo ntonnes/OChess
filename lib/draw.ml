@@ -4,6 +4,7 @@ open Pieces
 open Sidebar
 open Win
 open Utils
+open Check
 
 
 (** [render_chessboard ()] renders the chessboard texture on the game window.
@@ -50,17 +51,21 @@ let render_pieces () =
     If a piece is selected, it highlights its cell with a semi-transparent green rectangle.
 *)
 let render_selected () =
-  let get_rect p = 
-    let y, x = !(p.row)*(!cs), !(p.col)*(!cs)in
+  let highlight_tiles = 
+    match !selected with
+    | None -> []
+    | Some p ->
+      let src = (!(p.row), !(p.col)) in
+      [src]@(get_valid_moves p)
+  in
+  let get_rect (row, col) = 
+    let y, x = (row * !cs), (col * !cs) in
     Sdl.Rect.create
       ~x:(x + !offset_x) 
       ~y:(y + !offset_y) 
       ~w:!cs ~h:!cs
   in
-  match !selected with
-  | None -> ()
-  | Some p -> draw_rect 0 255 0 70 (get_rect p);
-;;
+  List.iter (fun coord -> draw_rect 0 255 0 70 (get_rect coord)) highlight_tiles
 
 
 (** [render_game ()] renders the entire game on the window.
