@@ -3,6 +3,7 @@ open Globals
 open Pieces
 open Draw
 open Validate
+open Check
 
 
 (** [cell_of_pixel x y] converts pixel coordinates to chessboard cell coordinates.
@@ -39,12 +40,18 @@ let process_click e =
   let (row, col) = cell_of_pixel x y in
   match !selected with
 
-  | Some p -> selected := None;
-    begin match validate p (row, col) !gs with
-    | false -> ()
-    | true -> move p (row, col) !gs; p.row := row; p.col := col; end_turn ();
-    end;
-    refresh();
+  | Some p -> 
+    selected := None;
+    let valid = (validate p (row, col) !gs) && not (self_check p (row, col)) in
+
+    if valid then begin
+      move p (row, col); 
+      p.first := false; 
+      p.row := row; p.col := col;
+      end_turn();
+      refresh()
+    end
+    else refresh()
 
   | None -> get_selected (row, col); refresh()
 ;;

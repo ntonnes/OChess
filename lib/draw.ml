@@ -66,6 +66,7 @@ let render_selected () =
       ~w:!cs ~h:!cs
   in
   List.iter (fun coord -> draw_rect 0 255 0 70 (get_rect coord)) highlight_tiles
+;;
 
 
 (** [render_game ()] renders the entire game on the window.

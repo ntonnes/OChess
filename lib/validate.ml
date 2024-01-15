@@ -3,8 +3,8 @@ open Globals
 open Pawn
 
 
-let get_piece tile = 
-  List.find_opt (fun p -> !(p.row)=(fst tile) && !(p.col)=(snd tile))
+let get_piece tile gs = 
+  List.find_opt (fun p -> !(p.row)=(fst tile) && !(p.col)=(snd tile)) gs
 ;;
 
 
@@ -14,10 +14,10 @@ let get_piece tile =
     @param dest The destination coordinates (row, col) on the chessboard.
     @return [true] if there is an obstacle on the path, [false] otherwise.
 *)
-let illegal_jump piece dest = 
+let illegal_jump piece dest gs = 
   let rec has_obstacle row col acc =
     if row = !(piece.row) && col = !(piece.col) then false
-    else if List.exists (fun p -> !(p.row) = row && !(p.col) = col && acc <> 0) !gs then true
+    else if List.exists (fun p -> !(p.row) = row && !(p.col) = col && acc <> 0) gs then true
     else
       let new_row, new_col =
         if row = !(piece.row) then row, (col + (if !(piece.col) < snd dest then -1 else 1))
@@ -65,25 +65,25 @@ let valid_vector piece dest =
 *)
 
 let validate piece dest gs = 
-  not (illegal_jump piece dest) 
+  not (illegal_jump piece dest gs) 
   && (valid_vector piece dest) 
   && (valid_dst piece dest gs)
 ;;
 
-let move piece dest gms = 
-  match get_piece dest gms with
-  | None -> piece.first := false; ()
-  | Some x when x.color = piece.color -> ()
-  | Some x ->
-    let pred p = x <> p in
-    gs := List.filter pred (gms);
-    piece.first := false;
+let move piece dest = 
+  match get_piece dest !gs with
+  | Some x when x.color<>piece.color ->
     if x.piece = King then victor := Some piece.color;
-    match !turn with
+    let pred p = x <> p in
+    gs := List.filter pred (!gs);
+    begin match !turn with
     | Black -> 
       captures_black := List.append [x] !captures_black;
     | White -> 
       captures_white := List.append [x] !captures_white;
+    end
+  | _ -> ()
+    
 ;;
 
 let good_move piece dest = 
@@ -96,7 +96,7 @@ let good_move piece dest =
     | Rook -> (dx = 0 && dy <> 0) || (dy = 0 && dx <> 0)
     | Pawn -> move_pawn piece dx dy dest
   in
-  if not (illegal_jump piece dest) && try_move then 
+  if not (illegal_jump piece dest !gs) && try_move then 
     let pred p = dest = (!(p.row), !(p.col)) in
     match List.find_opt pred !gs with
     | None -> true

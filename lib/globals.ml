@@ -25,6 +25,13 @@ let captures_black : piece list ref = ref []
 let captures_white : piece list ref = ref []
 
 
+let opp color = 
+  match color with
+  | Black -> White
+  | White -> Black
+;;
+
+
 (** [get_window ()] returns the game window reference.
     @return The game window reference.
     @raise [Sdl_error] if the window reference is [None].

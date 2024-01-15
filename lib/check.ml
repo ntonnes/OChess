@@ -1,14 +1,19 @@
 open Pieces
 open Validate
+open Globals
 
+exception Bad_sim
 
 let is_in_check color gs =
   let king_opt = List.find_opt (fun piece -> piece.piece=King && piece.color=color) gs in
   match king_opt with
   | Some king ->
     let dst = (!(king.row), !(king.col)) in
+    print_int (fst dst);
+    print_int (snd dst);
+    print_newline();
     List.exists (fun p -> validate p dst gs) gs
-  | None -> false
+  | None -> raise Bad_sim
 ;;
 
 
@@ -17,10 +22,29 @@ let get_valid_moves piece =
       List.init 8 (fun col -> (row, col))
     ) |> List.flatten
   in 
-  List.filter (fun dst -> good_move piece dst) all_dst
+  List.filter (fun dst -> validate piece dst !gs) all_dst
 ;;
 
 
+let self_check piece dst = 
+  let sim_board =
+    List.filter (fun p -> 
+      not (!(p.row)=fst dst && !(p.col)=snd dst) 
+      && not (!(piece.row)= !(p.row) && !(piece.col)= !(p.col))
+      ) !gs
+  in
+  let new_sim_board = sim_board@[
+    { piece=piece.piece; color=piece.color; first=ref false; row=ref (fst dst); col=ref (snd dst); }
+  ]
+  in
+  is_in_check piece.color new_sim_board
+;;
+
+
+(*let is_in_checkmate color gs = 
+  let enemies = List.filter (fun p -> p.color<>color) gs in
+  let 
+*)
 (*
 let possible_moves king gs =
   let (r, c) = (!(king.row), !(king.col)) in
