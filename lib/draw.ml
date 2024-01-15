@@ -4,7 +4,7 @@ open Pieces
 open Sidebar
 open Win
 open Utils
-open Check
+open Validate
 
 
 (** [render_chessboard ()] renders the chessboard texture on the game window.
@@ -44,6 +44,15 @@ let render_pieces () =
     paste_tex tex rect;
   in
   List.iter (go) !gs
+;;
+
+
+let get_valid_moves piece gs=
+  let all_dst = List.init 8 (fun row ->
+      List.init 8 (fun col -> (row, col))
+    ) |> List.flatten
+  in 
+  List.filter (fun dst -> validate piece dst gs) all_dst
 ;;
 
 

@@ -49,6 +49,7 @@ let process_click e =
       p.first := false; 
       p.row := row; p.col := col;
       end_turn();
+      is_in_checkmate !turn !gs;
       refresh()
     end
     else refresh()

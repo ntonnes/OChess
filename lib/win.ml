@@ -43,7 +43,7 @@ let winner color =
   match Sdl.show_message_box { 
     flags = information;
     window = (None);
-    title = "Game Over";
+    title = "Checkmate!";
     message = message;
     buttons = buttons;
     color_scheme = None }
