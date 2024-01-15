@@ -1,5 +1,4 @@
 open Pieces
-open Globals
 
 
 (** [move_pawn piece dx dy dst] checks if a pawn move is valid based on its color and destination coordinates.
@@ -10,12 +9,12 @@ open Globals
     @param dst The destination coordinates (row, col) on the chessboard.
     @return [true] if the move is valid, [false] otherwise.
 *)
-let move_pawn piece dx dy dst =
+let move_pawn piece dx dy dst gs =
 
   (* Gets piece at the destination tile *)
   let target () = 
     let pred p = dst = (!(p.row), !(p.col)) in
-    List.find_opt pred !gs
+    List.find_opt pred gs
   in
 
   (* Checks if the target is a valid capture *)

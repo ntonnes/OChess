@@ -1,6 +1,7 @@
 open Pieces
 open Validate
 open Globals
+open Board
 
 exception Bad_sim
 
@@ -9,35 +10,33 @@ let is_in_check color gs =
   match king_opt with
   | Some king ->
     let dst = (!(king.row), !(king.col)) in
-    print_int (fst dst);
-    print_int (snd dst);
-    print_newline();
     List.exists (fun p -> validate p dst gs) gs
   | None -> raise Bad_sim
 ;;
 
 
-let get_valid_moves piece =
-  let all_dst = List.init 8 (fun row ->
-      List.init 8 (fun col -> (row, col))
+let get_valid_moves piece gs=
+  let all_dst = List.init 7 (fun row ->
+      List.init 7 (fun col -> (row, col))
     ) |> List.flatten
   in 
-  List.filter (fun dst -> validate piece dst !gs) all_dst
+  List.filter (fun dst -> validate piece dst gs) all_dst
 ;;
 
 
 let self_check piece dst = 
-  let sim_board =
-    List.filter (fun p -> 
-      not (!(p.row)=fst dst && !(p.col)=snd dst) 
-      && not (!(piece.row)= !(p.row) && !(piece.col)= !(p.col))
-      ) !gs
-  in
-  let new_sim_board = sim_board@[
+  let sim_board = ref (copy_board !gs) in
+
+  sim_board := List.filter (fun p -> 
+  not (!(p.row)=fst dst && !(p.col)=snd dst) 
+  && not (!(piece.row)= !(p.row) && !(piece.col)= !(p.col))
+  ) !sim_board;
+
+  sim_board := (!sim_board)@[
     { piece=piece.piece; color=piece.color; first=ref false; row=ref (fst dst); col=ref (snd dst); }
-  ]
-  in
-  is_in_check piece.color new_sim_board
+  ];
+
+  is_in_check piece.color !sim_board
 ;;
 
 

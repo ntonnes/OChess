@@ -56,7 +56,7 @@ let render_selected () =
     | None -> []
     | Some p ->
       let src = (!(p.row), !(p.col)) in
-      [src]@(get_valid_moves p)
+      [src]@(get_valid_moves p !gs)
   in
   let get_rect (row, col) = 
     let y, x = (row * !cs), (col * !cs) in

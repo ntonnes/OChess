@@ -45,7 +45,7 @@ let valid_dst piece dest gs =
   | Some _ -> true
 ;;
 
-let valid_vector piece dest =
+let valid_vector piece dest gs =
   let dx, dy = !(piece.row)-(fst dest), !(piece.col)-(snd dest) in
   match piece.piece with
   | King -> (abs dx<2) && (abs dy<2) 
@@ -53,7 +53,7 @@ let valid_vector piece dest =
   | Bishop -> (abs dx=abs dy)
   | Knight -> (abs dx=1 && abs dy=2) || (abs dy=1 && abs dx=2)
   | Rook -> (dx = 0 && dy <> 0) || (dy = 0 && dx <> 0)
-  | Pawn -> move_pawn piece dx dy dest
+  | Pawn -> move_pawn piece dx dy dest gs
 ;;
 
 
@@ -66,7 +66,7 @@ let valid_vector piece dest =
 
 let validate piece dest gs = 
   not (illegal_jump piece dest gs) 
-  && (valid_vector piece dest) 
+  && (valid_vector piece dest gs) 
   && (valid_dst piece dest gs)
 ;;
 
@@ -84,23 +84,4 @@ let move piece dest =
     end
   | _ -> ()
     
-;;
-
-let good_move piece dest = 
-  let dx, dy = !(piece.row)-(fst dest), !(piece.col)-(snd dest) in
-  let try_move = match piece.piece with
-    | King -> (abs dx<2) && (abs dy<2) 
-    | Queen -> (dx=0 && dy<>0) || (dy=0 && dx<>0) || (abs dx=abs dy)
-    | Bishop -> (abs dx=abs dy)
-    | Knight -> (abs dx=1 && abs dy=2) || (abs dy=1 && abs dx=2)
-    | Rook -> (dx = 0 && dy <> 0) || (dy = 0 && dx <> 0)
-    | Pawn -> move_pawn piece dx dy dest
-  in
-  if not (illegal_jump piece dest !gs) && try_move then 
-    let pred p = dest = (!(p.row), !(p.col)) in
-    match List.find_opt pred !gs with
-    | None -> true
-    | Some x when x.color = piece.color -> false
-    | _ -> true
-  else false
 ;;

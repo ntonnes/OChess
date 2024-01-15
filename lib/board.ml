@@ -12,6 +12,20 @@ let make piece color row col =
   { piece=piece; color=color; first=ref true; row=ref row; col=ref col; }
 ;;
 
+(* Function to create a copy of a piece *)
+let copy_piece (piece : piece) : piece =
+  {
+    piece = piece.piece;
+    color = piece.color;
+    first = ref !(piece.first);
+    row = ref !(piece.row);
+    col = ref !(piece.col);
+  }
+
+(* Function to create a copy of the entire board *)
+let copy_board (board : piece list) : piece list =
+  List.map copy_piece board
+
 
 (** [new_board ()] creates a new chess board with the initial piece positions.
     @return A list of pieces representing the initial state of the chess board.
