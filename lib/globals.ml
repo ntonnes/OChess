@@ -6,8 +6,8 @@ open Pieces
 let cs = ref 100 ;;
 let window_w = ref (!cs * 8) ;;
 let window_h = ref (!cs * 8) ;;
-let offset_x = ref 0 ;;
-let offset_y = ref 0 ;;
+let offset_x = ref 200 ;;
+let offset_y = ref 200 ;;
 
 
 (* References for application. *)

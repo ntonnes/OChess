@@ -4,6 +4,7 @@ open Pieces
 open Draw
 open Validate
 open Check
+open Win
 
 
 (** [cell_of_pixel x y] converts pixel coordinates to chessboard cell coordinates.
@@ -37,8 +38,17 @@ let process_click e =
   let x, y = Sdl.Event.(get e mouse_button_x, get e mouse_button_y) in
   if Sdl.Event.(get e mouse_button_button) <> Sdl.Button.left 
     then ();
+  let reset_check() =
+    if x > (!offset_x/6) && x < (5*((!offset_x)/6) + 5)
+    && y > (!window_h-80) && y < (((!cs/2)+5) + (!window_h-80))
+      then begin new_game(); refresh() end
+    else ();
+  in 
+  reset_check();
   let (row, col) = cell_of_pixel x y in
   match !selected with
+
+  | _ when (x < !offset_x) || (y < !offset_y) -> ()
 
   | Some p -> 
     selected := None;

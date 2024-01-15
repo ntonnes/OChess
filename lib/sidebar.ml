@@ -61,7 +61,8 @@ let render_info_text () =
     | Black -> "Black's Turn"
     | White -> "White's Turn"
   in
-  render_text 28 text (!offset_x/2) 20;
+  render_text 28 text (!offset_x/2) 40;
+  render_text 25 "Reset" (!offset_x/2) (!window_h - 72);
   render_text 20 "Black's Captures" (!offset_x + (!offset_x/2) + (!cs*8)) 20;
   render_text 20 "White's Captures" (!offset_x + (!offset_x/2) + (!cs*8)) ((!window_h/2)+20);
 ;;
@@ -114,9 +115,16 @@ let render_captures ()=
     @ensures Sidebars are rendered on the screen.
 *)
 let render_sidebars () =
+  let render_buttons () = 
+    let reset_border = Sdl.Rect.create ~x:((!offset_x)/6) ~y:(!window_h-80) ~w:(4*((!offset_x)/6) + 5) ~h:(((!cs)/2)+5) in
+    let reset = Sdl.Rect.create ~x:((!offset_x)/6) ~y:(!window_h-80) ~w:(4*((!offset_x)/6)) ~h:((!cs) /2) in
+    draw_rect 120 120 120 255 reset_border;
+    draw_rect 160 160 160 255 reset;
+  in
   let right = Sdl.Rect.create ~x:(!offset_x+(!cs*8)) ~y:0 ~w:(!offset_x) ~h:(!cs *8) in
   let left = Sdl.Rect.create ~x:0 ~y:0 ~w:(!offset_x) ~h:(!cs * 8) in
-  List.iter (draw_rect 204 153 102 255) [left; right];
+  List.iter (draw_rect 184 133 82 255) [left; right];
+  render_buttons();
   render_info_text();
   render_captures();
 ;;
