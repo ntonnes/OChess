@@ -116,7 +116,7 @@ let render_captures ()=
 let render_sidebars () =
   let right = Sdl.Rect.create ~x:(!offset_x+(!cs*8)) ~y:0 ~w:(!offset_x) ~h:(!cs *8) in
   let left = Sdl.Rect.create ~x:0 ~y:0 ~w:(!offset_x) ~h:(!cs * 8) in
-  List.iter (draw_rect 118 118 118 255) [left; right];
+  List.iter (draw_rect 204 153 102 255) [left; right];
   render_info_text();
   render_captures();
 ;;
