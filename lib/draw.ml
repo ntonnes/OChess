@@ -74,7 +74,8 @@ let render_selected () =
       ~y:(y + !offset_y) 
       ~w:!cs ~h:!cs
   in
-  List.iter (fun coord -> draw_rect 0 255 0 70 (get_rect coord)) highlight_tiles
+  List.iter (fun coord -> draw_rect 0 255 0 70 (get_rect coord)) highlight_tiles;
+  List.iter (fun coord -> draw_rect 0 200 255 70 (get_rect coord)) !last_move
 ;;
 
 

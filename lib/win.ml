@@ -13,6 +13,7 @@ let new_game () =
   gs := new_board ();
   turn := White;
   victor := None;
+  last_move := [];
   captures_white := [];
   captures_black := []
 ;;

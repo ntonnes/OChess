@@ -46,6 +46,7 @@ let process_click e =
 
     if valid then begin
       move p (row, col); 
+      last_move := [ (!(p.row), !(p.col)); (row,col)];
       p.first := false; 
       p.row := row; p.col := col;
       end_turn();

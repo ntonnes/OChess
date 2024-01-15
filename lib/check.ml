@@ -45,14 +45,10 @@ let self_check piece dst =
 
 
 let is_in_checkmate color gs = 
-  let king_opt = List.find_opt (fun piece -> piece.piece=King && piece.color=color) gs in
-  match king_opt with
-  | Some king ->
-    let moves = possible_moves king gs in
-    begin if List.for_all (fun dst -> self_check king dst) moves
-      && not (List.is_empty moves)
-      then victor := Some (opp color)
-    else ();
-    end
-  | None -> ()
+  if List.exists (fun p -> 
+    let moves = possible_moves p gs in
+    List.exists (fun dst -> not (self_check p dst)) moves 
+  ) (List.filter (fun p -> p.color=color) gs)
+    then ()
+  else victor := Some (opp color);
 ;;

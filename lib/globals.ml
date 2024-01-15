@@ -23,6 +23,7 @@ let turn : color ref = ref White
 let victor : color option ref = ref None
 let captures_black : piece list ref = ref []
 let captures_white : piece list ref = ref []
+let last_move : (int*int) list ref = ref []
 
 
 let opp color = 
