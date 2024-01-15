@@ -1,9 +1,7 @@
 
-type color = White | Black 
-;;
+type color = White | Black ;;
 
-type piece_type = King | Queen | Rook | Bishop | Knight | Pawn 
-;;
+type piece_type = King | Queen | Rook | Bishop | Knight | Pawn ;;
 
 type piece = {
   piece : piece_type;
@@ -11,8 +9,7 @@ type piece = {
   first : bool ref;
   row : int ref;
   col : int ref;
-}
-;;
+} ;;
 
 
 (** [file_of_piece p] returns the file path of the texture corresponding to the given chess piece.

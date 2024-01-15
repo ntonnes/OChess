@@ -3,29 +3,33 @@ open Pieces
 
 
 (* References for pixel navigation. *)
-let cs = ref 100
-let window_w = ref (!cs * 8)
-let window_h = ref (!cs * 8)
-let offset_x = ref 0
-let offset_y = ref 0
+let cs = ref 100 ;;
+let window_w = ref (!cs * 8) ;;
+let window_h = ref (!cs * 8) ;;
+let offset_x = ref 0 ;;
+let offset_y = ref 0 ;;
 
 
 (* References for application. *)
-let window : Sdl.window option ref = ref None
-let rend : Sdl.renderer option ref = ref None
+let window : Sdl.window option ref = ref None ;;
+let rend : Sdl.renderer option ref = ref None ;;
 
 
 (* References for gameplay. *)
-let selected : piece option ref = ref None
-type game_state = piece list
-let gs : game_state ref = ref []
-let turn : color ref = ref White
-let victor : color option ref = ref None
-let captures_black : piece list ref = ref []
-let captures_white : piece list ref = ref []
-let last_move : (int*int) list ref = ref []
+let selected : piece option ref = ref None ;;
+type game_state = piece list ;;
+let gs : game_state ref = ref [] ;;
+let turn : color ref = ref White ;;
+let victor : color option ref = ref None ;;
+let captures_black : piece list ref = ref [] ;;
+let captures_white : piece list ref = ref [] ;;
+let last_move : (int*int) list ref = ref [] ;;
 
 
+(** [opp color] returns the opposite color.
+    @param color The input color (Black or White).
+    @return The opposite color.
+*)
 let opp color = 
   match color with
   | Black -> White

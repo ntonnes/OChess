@@ -12,7 +12,11 @@ let make piece color row col =
   { piece=piece; color=color; first=ref true; row=ref row; col=ref col; }
 ;;
 
-(* Function to create a copy of a piece *)
+
+(** [copy_piece piece] creates a copy of the given chess piece.
+    @param piece The chess piece to be copied.
+    @return A new chess piece with the same attributes as the original.
+*)
 let copy_piece (piece : piece) : piece =
   {
     piece = piece.piece;
@@ -21,10 +25,16 @@ let copy_piece (piece : piece) : piece =
     row = ref !(piece.row);
     col = ref !(piece.col);
   }
+;;
 
-(* Function to create a copy of the entire board *)
+
+(** [copy_board board] creates a copy of the given chess board.
+    @param board The list of chess pieces representing the board.
+    @return A new list of chess pieces with the same attributes as the original board.
+*)
 let copy_board (board : piece list) : piece list =
   List.map copy_piece board
+;;
 
 
 (** [new_board ()] creates a new chess board with the initial piece positions.
@@ -68,3 +78,4 @@ let new_board () : piece list =
     make Knight White 7 6;
     make Rook   White 7 7;
   ]
+;;

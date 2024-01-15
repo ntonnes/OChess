@@ -7,6 +7,7 @@ open Pieces
     @param dx The change in the row position (positive for forward, negative for backward).
     @param dy The change in the column position (positive for right, negative for left).
     @param dst The destination coordinates (row, col) on the chessboard.
+    @param gs The list of chess pieces representing the current game state.
     @return [true] if the move is valid, [false] otherwise.
 *)
 let move_pawn piece dx dy dst gs =

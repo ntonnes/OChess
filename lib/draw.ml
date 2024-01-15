@@ -47,6 +47,11 @@ let render_pieces () =
 ;;
 
 
+(** [get_valid_moves piece gs] retrieves all valid moves for the given chess piece on the current game board.
+    @param piece The chess piece for which to find valid moves.
+    @param gs The list of chess pieces representing the current game state.
+    @return The list of valid destination coordinates for the given piece.
+*)
 let get_valid_moves piece gs=
   let all_dst = List.init 8 (fun row ->
       List.init 8 (fun col -> (row, col))

@@ -3,6 +3,7 @@ open Tsdl_ttf
 open Chess.Utils
 open Chess.Loop
 
+
 (* Main application *)
 let main () = 
 
@@ -24,7 +25,7 @@ let main () =
         begin match Ttf.init () with
         | Error (`Msg e) -> Sdl.log "SDL_ttf initialization error: %s" e; exit 1
         | Ok () ->
-      
+          
           (* Enter the main event loop of the application *)
           event_loop();
 
